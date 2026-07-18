@@ -113,7 +113,13 @@ export function OutlineButton({
 
   if (href) {
     return (
-      <Link href={href} target={target} aria-label={ariaLabel} className={cls}>
+      <Link
+        href={href}
+        target={target}
+        aria-label={ariaLabel}
+        className={cls}
+        onClick={onClick}
+      >
         {inner}
       </Link>
     );

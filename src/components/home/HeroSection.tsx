@@ -14,7 +14,6 @@ export function HeroSection() {
         media="(max-width: 1023px)"
       />
       <section className="relative bg-white overflow-hidden" aria-label="Hero">
-        <h1 className="sr-only">Hire Verified Maids &amp; Nannies in UAE Quickly</h1>
         {/* ── Mobile layout ── */}
         <div className="lg:hidden flex flex-col items-center text-center pt-30 px-4 pb-0 relative overflow-hidden">
           {/* Decorative background glow */}
@@ -29,11 +28,11 @@ export function HeroSection() {
 
           {/* Heading + description */}
           <div className="flex flex-col gap-3 z-10 mb-8 relative">
-            <div aria-hidden="true" className="text-[32px] font-semibold leading-[42px] tracking-[-0.5px] text-dark">
-              Hire Verified{" "}
+            <h1 className="text-[23px] max-[359px]:text-[20px] sm:text-[32px] md:text-[44px] font-semibold leading-snug tracking-[-0.5px] text-dark">
+              Maids In Dubai - Hire Verified <br />
               <span className="text-primary">Maids & Nannies</span> in UAE
               Quickly
-            </div>
+            </h1>
             <p className="text-[14px] text-dark/80 leading-5 tracking-[0.5px]">
               Find verified live-out maids, full-time maids, nannies, and caregivers across the UAE, including Dubai, Abu Dhabi, Sharjah, and all emirates.
             </p>
@@ -106,15 +105,15 @@ export function HeroSection() {
             aria-hidden="true"
             className="right-0 top-0 translate-x-[50%] z-0 bg-white w-[20%] aspect-square absolute blur-[100px] rounded-full pointer-events-none will-change-transform"
           />
-          <div className="flex flex-col z-10 justify-between w-[58%] xl:w-[55%] px-8 lg:px-16 xl:px-[80px] pt-[152px] pb-[120px]">
+          <div className="flex flex-col gap-12 z-10 justify-center w-[58%] xl:w-[55%] px-8 lg:px-10 xl:px-[80px] pt-[152px] pb-[120px]">
             {/* Heading + description */}
-            <div className="flex flex-col gap-8">
-              <div aria-hidden="true" className="text-[72px] font-semibold leading-[80px] tracking-[-2px] text-dark">
-                Hire Verified <br />{" "}
+            <div className="flex flex-col gap-8 text-start items-start">
+              <h1 className="text-[length:clamp(2.15rem,3.6vw_-_0.65rem,4.25rem)] font-semibold leading-tight tracking-[-0.02em] text-dark">
+                Maids In Dubai - Hire Verified <br />
                 <span className="text-primary">Maids & Nannies</span> in UAE
                 Quickly
-              </div>
-              <p className="text-[20px] text-dark/80 leading-[30px] tracking-[0.25px]">
+              </h1>
+              <p className="text-[20px] text-dark/80 leading-[30px] tracking-[0.25px] max-w-[560px]">
                 Find verified live-out maids, full-time maids, nannies, and caregivers across the UAE, including Dubai, Abu Dhabi, Sharjah, and all emirates.
               </p>
             </div>
