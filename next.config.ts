@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   async redirects() {
@@ -24,3 +25,7 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// Gives local `next dev` access to Cloudflare bindings (KV, etc.) via
+// `getCloudflareContext()`. No-op when actually running on Workers.
+initOpenNextCloudflareForDev();
