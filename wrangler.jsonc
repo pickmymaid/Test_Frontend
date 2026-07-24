@@ -9,12 +9,10 @@
     "binding": "ASSETS"
   },
   // Used by OpenNext for ISR/`fetch` cache (ISR revalidation, getBlogs/findMaids/getMaid `next.revalidate`).
-  // Create it once with: npx wrangler kv namespace create NEXT_INC_CACHE_KV
-  // then replace `id` below with the id it prints.
   "kv_namespaces": [
     {
       "binding": "NEXT_INC_CACHE_KV",
-      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+      "id": "f5aca835d33a456c94bd647157d86c02"
     }
   ],
   // Required so ISR-tagged revalidation (revalidatePath in /api/revalidate) can
