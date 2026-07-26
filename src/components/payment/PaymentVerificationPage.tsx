@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { acknowledgePayment } from "@/lib/api";
+import { acknowledgePayment, ApiError } from "@/lib/api";
 
 // The gateway redirects the browser back the instant the charge completes,
 // but its server-to-server webhook (which is what actually activates the
@@ -51,6 +51,17 @@ export function PaymentVerificationPage() {
           }
         } catch (err) {
           console.error("Payment acknowledgement attempt failed:", err);
+
+          // The session can expire during the trip to the payment gateway
+          // and back — that's not a transient failure retrying will fix.
+          // Send the user to log back in and resume verification with the
+          // same ref, instead of reporting a false "payment failed".
+          if (err instanceof ApiError && err.status === 401) {
+            if (cancelled) return;
+            const returnTo = `/payment-verification?ref=${encodeURIComponent(ref)}`;
+            router.replace(`/login?returnTo=${encodeURIComponent(returnTo)}`);
+            return;
+          }
         }
 
         if (cancelled) return;
