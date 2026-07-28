@@ -18,7 +18,7 @@ export function StatsSection() {
               key={label}
               className="flex flex-col lg:items-center first:items-start border-r border-gray-100 last:border-r-0 "
             >
-              <dt className="text-md sm:text-4xl 2xl:text-5xl lg:text-4xl font-bold text-dark leading-none mb-1.5">
+              <dt className="text-2xl sm:text-4xl 2xl:text-5xl lg:text-4xl font-bold text-dark leading-none mb-1.5">
                 {orange ? (
                   <span className="text-primary">
                     {value}

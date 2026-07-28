@@ -1,18 +1,19 @@
 "use client"
 import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import { SectionHeader } from '../ui/SectionHeader'
+import { ChevronsRight } from 'lucide-react'
 
 const team = [
   { id: 1, name: 'Shahida', role: 'HR Administration Manager | Dedicated Client Support', image: '/images/team/shahida.webp' },
   { id: 2, name: 'Yasmin', role: 'HR Specialist', image: '/images/team/Yasmine.webp' },
-  { id: 3, name: 'Noor', role: 'HR Assistant', image: '/images/team/Noor.webp' }
+  { id: 3, name: 'Noor', role: 'HR Assistant', image: '/images/team/Noor.webp' },
+    
 ]
 
 function TeamCard({ name, role, image }: { name: string; role: string; image: string }) {
   return (
-    <article className="rounded-2xl border border-gray-100 overflow-hidden bg-white flex-shrink-0 w-[78vw] sm:w-[44vw] lg:w-auto snap-start p-4">
-      <div className="relative aspect-square w-full bg-gray-100 rounded-lg overflow-hidden">
+    <article className="rounded-3xl overflow-hidden bg-white  flex-shrink-0 w-[78vw] sm:w-[44vw] lg:w-auto snap-start p-3">
+      <div className="relative aspect-[2/2] w-full bg-gray-100 rounded-2xl overflow-hidden">
         <Image
           src={image}
           alt={`${name}, ${role} at Pickmymaid`}
@@ -22,9 +23,9 @@ function TeamCard({ name, role, image }: { name: string; role: string; image: st
           loading="lazy"
         />
       </div>
-      <div className="pt-4">
-        <p className="font-semibold text-dark text-sm lg:text-base">{name}</p>
-        <p className="text-muted text-xs lg:text-sm mt-0.5">{role}</p>
+      <div className="pt-4 px-3">
+        <p className="font-regular text-dark text-lg lg:text-2xl">{name}</p>
+        <p className="text-muted text-sm lg:text-lg mt-0.5">{role}</p>
       </div>
     </article>
   )
@@ -73,15 +74,24 @@ export function TeamSection() {
 
   return (
     <section className="py-12 lg:py-20 bg-[#fafafa]" aria-label="Our Team">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16">
-        <SectionHeader
-          breadcrumb="Our Team"
-          heading="Meet the people behind Pickmymaid!"
-          subheading="We are a real team based in Dubai. When you contact us, you speak to a person — not a bot, not an automated system."
-        />
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
+        <div className="mb-10 lg:mb-14">
+          <div className="flex justify-center lg:justify-normal items-center gap-1 text-muted text-xs font-medium mb-4 lg:mb-6">
+            <ChevronsRight className="w-8 h-8  md:w-11 md:h-11 font-thin" />
+            <span className='text-lg md:text-xl font-medium'>Our Team</span>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center items-center lg:items-end lg:justify-between gap-3 lg:gap-20">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:7xl text-center lg:text-left font-medium text-dark leading-tight max-w-xl">
+              Meet the people behind Pickmymaid!
+            </h1>
+            <p className="text-lg lg:text-xl text-muted text-center font-regular text-black lg:text-left leading-relaxed lg:max-w-lg">
+              We are a real team based in Dubai. When you contact us, you speak to a person — not a bot, not an automated system.
+            </p>
+          </div>
+        </div>
 
         {/* Desktop: 4-column grid */}
-        <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+        <div className="hidden lg:grid lg:grid-cols-3 gap-8">
           {team.map(m => (
             <TeamCard key={m.id} name={m.name} role={m.role} image={m.image} />
           ))}

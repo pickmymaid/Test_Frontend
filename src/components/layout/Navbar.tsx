@@ -6,19 +6,18 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { lockScroll, unlockScroll } from "@/lib/scrollLock";
-import { Menu, X, ChevronDown, Heart, LogOut, PhoneCall } from "lucide-react";
+import { Menu, X, ChevronDown, Heart, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { SplitButton } from "../ui/SplitButton";
 import { OutlineButton } from "../ui/OutlineButton";
 import { useAuthStore } from "@/store/auth";
 import { verifyAuth, logoutUser, getPaymentDetails } from "@/lib/api";
-import { WhatsAppIcon } from "../icons/Whatsapp";
 
 const ASSET_BASE = "https://assets.pickmymaid.com";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "All Maids/Nannies", href: "/search" },
+  { label: "Search Maid/Nanny", href: "/search" },
   { label: "Pricing", href: "/pricing" },
   { label: "How It Works", href: "/how-it-works" },
   { label: "About Us", href: "/about-us" },
@@ -67,23 +66,37 @@ export function Navbar() {
   const logout = useAuthStore((s) => s.logout);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hideNav, setHideNav] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // Start as false — we always wait for hydration before deciding auth state
   const [authReady, setAuthReady] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
   /* ── Disable browser scroll restoration — we handle it ourselves ── */
   useEffect(() => {
     window.history.scrollRestoration = "manual";
   }, []);
 
-  /* ── Scroll shadow ── */
+  /* ── Scroll shadow + hide-on-scroll-down ── */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 10);
+
+      if (mobileOpen || currentY <= 80) {
+        setHideNav(false);
+      } else if (currentY > lastScrollY.current) {
+        setHideNav(true);
+      } else if (currentY < lastScrollY.current) {
+        setHideNav(false);
+      }
+      lastScrollY.current = currentY;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [mobileOpen]);
 
   /* ── Body scroll lock ── */
   useEffect(() => {
@@ -308,11 +321,11 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 inset-x-0 z-50 bg-white transition-shadow duration-300 ${
-          scrolled ? "shadow-sm" : ""
-        }`}
+        className={`fixed top-0 inset-x-0 z-50 bg-white transition-transform duration-300 ease-in-out ${
+          hideNav ? "-translate-y-full" : "translate-y-0"
+        } ${scrolled ? "shadow-sm" : ""}`}
       >
-        <nav className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
+        <nav className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
           <div className="flex items-center justify-between h-16 lg:h-18">
             {/* Logo */}
             <Link
@@ -348,26 +361,25 @@ export function Navbar() {
             </Link>
 
             {/* Desktop nav links */}
-            <div className="hidden xl:flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-full px-3 py-1.5">
-              {navLinks.map((link) =>
-                link.href === "/search" ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm font-medium text-gray-600 hover:text-primary px-3 py-1.5 rounded-full hover:bg-white transition-all duration-200 whitespace-nowrap"
-                  >
+            <div className="hidden xl:flex items-center gap-6">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === "/" ? pathname === "/" : pathname === link.href;
+                const linkClassName = `text-sm whitespace-nowrap transition-colors duration-200 ${
+                  isActive
+                    ? "font-semibold text-dark"
+                    : "font-medium text-gray-600 hover:text-primary"
+                }`;
+                return link.href === "/search" ? (
+                  <a key={link.href} href={link.href} className={linkClassName}>
                     {link.label}
                   </a>
                 ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm font-medium text-gray-600 hover:text-primary px-3 py-1.5 rounded-full hover:bg-white transition-all duration-200 whitespace-nowrap"
-                  >
+                  <Link key={link.href} href={link.href} className={linkClassName}>
                     {link.label}
                   </Link>
-                ),
-              )}
+                );
+              })}
             </div>
 
             <div className="flex items-center gap-3 shrink-0">

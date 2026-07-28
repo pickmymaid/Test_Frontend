@@ -51,7 +51,7 @@ function FaqItem({
         />
         <div className="flex-1 min-w-0">
           <p
-            className={`text-base font-medium leading-snug lg:leading-[34px] transition-colors ${
+            className={`text-lg xl:text-2xl font-medium leading-snug lg:leading-[34px] transition-colors ${
               isOpen ? "text-primary" : "text-dark"
             }`}
           >
@@ -84,16 +84,17 @@ export function FaqSection() {
 
   return (
     <section
+      id="faq"
       className="py-[60px] lg:py-20 bg-white"
       aria-label="Frequently Asked Questions"
     >
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
         {/* Mobile: stacked centered layout */}
         <div className="flex flex-col gap-10 lg:hidden">
           <div className="flex flex-col gap-6 items-center text-center">
-            <div className="flex items-center gap-2 text-dark/80 text-xs font-medium">
+               <div className="flex items-center gap-2 text-dark/80 text-xs font-medium">
               <ChevronsRight className="w-4 h-4" />
-              <span>FAQs</span>
+              <span className="text-lg font-medium">FAQs</span>
             </div>
             <div className="flex flex-col gap-3">
               <h2 className="text-2xl font-bold text-dark leading-tight tracking-[-0.25px]">
@@ -120,9 +121,9 @@ export function FaqSection() {
 
         {/* Desktop: two-column layout */}
         <div className="hidden lg:block">
-          <div className="flex items-center gap-1 text-muted text-xs font-medium mb-20">
-            <ChevronsRight className="w-4 h-4" />
-            <span>FAQs</span>
+             <div className="flex justify-center md:justify-normal items-center gap-1 text-muted text-xs font-medium mb-4 lg:mb-14">
+            <ChevronsRight className="w-8 h-8  md:w-11 md:h-11 font-thin" />
+            <span className='text-lg  font-medium'>FAQs</span>
           </div>
           <div className="flex gap-20 items-start">
             <div className="flex flex-col gap-8 w-[420px] flex-shrink-0">

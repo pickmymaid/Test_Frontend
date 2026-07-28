@@ -1,7 +1,9 @@
 import Image from "next/image";
+import { Star } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 import { StatsSection } from "./StatsSection";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
+import { GoogleGIcon } from "../icons/GoogleG";
 
 export function HeroSection() {
   return (
@@ -14,8 +16,8 @@ export function HeroSection() {
         media="(max-width: 1023px)"
       />
       <section className="relative bg-white overflow-hidden" aria-label="Hero">
-        {/* ── Mobile layout ── */}
-        <div className="lg:hidden flex flex-col items-center text-center pt-30 px-4 pb-0 relative overflow-hidden">
+        {/* ── Mobile / tablet layout ── */}
+        <div className="lg:hidden flex flex-col items-center text-center pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 md:px-10 pb-0 relative overflow-hidden">
           {/* Decorative background glow */}
           <div
             aria-hidden="true"
@@ -27,38 +29,38 @@ export function HeroSection() {
           />
 
           {/* Heading + description */}
-          <div className="flex flex-col gap-3 z-10 mb-8 relative">
+          <div className="flex flex-col gap-3 z-10 mb-8 relative max-w-[400px] sm:max-w-[520px] md:max-w-[640px] mx-auto">
             <h1 className="text-[23px] max-[359px]:text-[20px] sm:text-[32px] md:text-[44px] font-semibold leading-snug tracking-[-0.5px] text-dark">
               Maids In Dubai - Hire Verified <br />
               <span className="text-primary">Maids & Nannies</span> in UAE
               Quickly
             </h1>
-            <p className="text-[14px] text-dark/80 leading-5 tracking-[0.5px]">
+            <p className="text-[14px] sm:text-base text-dark/80 leading-5 sm:leading-6 tracking-[0.5px]">
               Find verified live-out maids, full-time maids, nannies, and caregivers across the UAE, including Dubai, Abu Dhabi, Sharjah, and all emirates.
             </p>
           </div>
 
           {/* Keyword search */}
-          <div className="w-full z-10 mb-8 relative">
-            <SearchBar />
+          <div className="w-full sm:max-w-[520px] md:max-w-[640px] mx-auto z-10 mb-8 relative">
+            <SearchBar variant="mobile" />
           </div>
 
           {/* Maid image + People Hired pill */}
-          <div className="relative w-full z-10 h-[364px] mx-auto">
+          <div className="relative w-full z-10 h-[320px] sm:h-[420px] md:h-[520px] mx-auto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/home/hero-maid-mobile.webp"
               alt="Professional maid"
               fetchPriority="high"
               decoding="sync"
-              className="absolute bottom-0 left-1/2 -translate-x-1/2"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] sm:w-[360px] md:w-[440px] h-auto"
               width={400}
               height={400}
             />
             {/* People Hired pill */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/80 backdrop-blur-sm shadow-[inset_0.5px_0.5px_1px_rgba(0,0,0,0.1)] rounded-xl px-3 py-2 whitespace-nowrap">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/80 backdrop-blur-sm shadow-[inset_0.5px_0.5px_1px_rgba(0,0,0,0.1)] rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 whitespace-nowrap">
               <div className="flex -space-x-3 shrink-0">
-                <div className="w-8 h-8 rounded-full bg-orange-300 border border-white shrink-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-300 border border-white shrink-0">
                   <Image
                     src="/images/home/hired-people2.webp"
                     alt="People Hired"
@@ -68,7 +70,7 @@ export function HeroSection() {
                     fetchPriority="high"
                   />
                 </div>
-                <div className="w-8 h-8 rounded-full bg-blue-300 border border-white shrink-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-300 border border-white shrink-0">
                   <Image
                     src="/images/home/hired-people1.webp"
                     alt="People Hired"
@@ -78,16 +80,16 @@ export function HeroSection() {
                     fetchPriority="high"
                   />
                 </div>
-                <div className="w-8 h-8 rounded-full bg-dark border-2 border-white flex items-center justify-center text-white text-[10px] font-semibold shrink-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-dark border-2 border-white flex items-center justify-center text-white text-[10px] sm:text-xs font-semibold shrink-0">
                   2k+
                 </div>
               </div>
               <div className="text-left">
-                <p className="text-[12px] font-medium text-dark/50 leading-[18px] tracking-[0.5px]">
+                <p className="text-[12px] sm:text-[13px] font-medium text-dark/50 leading-[18px] tracking-[0.5px]">
                   People Hired
                 </p>
-                <p className="text-[12px] font-semibold text-dark leading-[18px] tracking-[0.5px]">
-                  This Month
+                <p className="text-[12px] sm:text-[13px] font-semibold text-dark leading-[18px] tracking-[0.5px]">
+                  This Week
                 </p>
               </div>
             </div>
@@ -95,19 +97,15 @@ export function HeroSection() {
         </div>
 
         {/* ── Desktop layout ── */}
-        <div className="hidden lg:flex min-h-screen">
+        <div className="hidden lg:flex min-h-[760px] xl:min-h-screen">
           {/* Decorative background glow */}
           <div
             aria-hidden="true"
-            className="right-0 bottom-0 translate-x-[20%] translate-y-[30%] z-0 bg-[#ff9068] w-[50%] aspect-square absolute blur-[120px] rounded-full pointer-events-none will-change-transform"
+            className="right-0 bottom-0 translate-x-[25%] translate-y-[25%] z-0 bg-[#ff9068] w-[48%] aspect-square absolute blur-[130px] rounded-full pointer-events-none will-change-transform"
           />
-          <div
-            aria-hidden="true"
-            className="right-0 top-0 translate-x-[50%] z-0 bg-white w-[20%] aspect-square absolute blur-[100px] rounded-full pointer-events-none will-change-transform"
-          />
-          <div className="flex flex-col gap-12 z-10 justify-center w-[58%] xl:w-[55%] px-8 lg:px-10 xl:px-[80px] pt-[152px] pb-[120px]">
+          <div className="flex flex-col gap-8 lg:gap-9 xl:gap-12 z-10 justify-center w-[58%] xl:w-[55%] px-8 lg:px-10 xl:px-[80px] pt-20 lg:pt-24 xl:pt-[152px] pb-12 lg:pb-16 xl:pb-[120px]">
             {/* Heading + description */}
-            <div className="flex flex-col gap-8 text-start items-start">
+            <div className="flex flex-col gap-6 lg:gap-7 xl:gap-8 text-start items-start">
               <h1 className="text-[length:clamp(2.15rem,3.6vw_-_0.65rem,4.25rem)] font-semibold leading-tight tracking-[-0.02em] text-dark">
                 Maids In Dubai - Hire Verified <br />
                 <span className="text-primary">Maids & Nannies</span> in UAE
@@ -119,7 +117,7 @@ export function HeroSection() {
             </div>
 
             {/* Search bar */}
-            <SearchBar />
+            <SearchBar variant="desktop" />
 
             {/* Stats */}
             <StatsSection />
@@ -150,57 +148,83 @@ export function HeroSection() {
               />
             </div>
 
+            {/* Top row: Google Rating + People Hired — flex row so they can never overlap */}
+            <div className="absolute inset-x-3 lg:inset-x-3 xl:inset-x-6 top-[40%] lg:top-[38%] xl:top-[44%] z-[2] flex items-start justify-between gap-1.5 lg:gap-2 xl:gap-4">
+              {/* Google Rating */}
+              <div className="mt-10 lg:mt-8 xl:mt-14 shrink-0 min-w-0 bg-white/80 backdrop-blur-xl shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] rounded-2xl lg:rounded-3xl px-3 py-2.5 lg:px-4 lg:py-3 xl:px-6 xl:py-4 flex items-center gap-1.5 lg:gap-2 xl:gap-3">
+                <GoogleGIcon className="w-6 h-6 lg:w-7 lg:h-7 xl:w-9 xl:h-9 shrink-0" />
+                <div className="flex flex-col gap-0.5 lg:gap-1">
+                  <p className="text-[11px] lg:text-xs xl:text-sm font-medium text-dark/50 leading-4 tracking-[0.25px] whitespace-nowrap">
+                    Google Rating
+                  </p>
+                  <div className="flex items-center gap-1 lg:gap-1.5">
+                    <span className="text-sm lg:text-base xl:text-lg font-bold text-dark leading-5 xl:leading-6">
+                      4.8
+                    </span>
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-2.5 h-2.5 lg:w-3 lg:h-3 xl:w-3.5 xl:h-3.5 text-amber-400 fill-amber-400"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* People Hired */}
+              <div className="shrink-0 min-w-0 bg-white/80 backdrop-blur-xl shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] rounded-2xl lg:rounded-3xl px-3 py-2.5 lg:px-4 lg:py-3 xl:px-6 xl:py-5">
+                <div className="flex items-center gap-1.5 lg:gap-2 xl:gap-4">
+                  <div className="flex -space-x-3 lg:-space-x-4 xl:-space-x-6 shrink-0">
+                    <div className="w-7 h-7 lg:w-9 lg:h-9 xl:w-16 xl:h-16 rounded-full bg-orange-300 border-2 border-white shrink-0">
+                      <Image
+                        src="/images/home/hired-people1.webp"
+                        alt="People Hired"
+                        width={64}
+                        height={64}
+                        className="object-cover"
+                        fetchPriority="high"
+                      />
+                    </div>
+                    <div className="w-7 h-7 lg:w-9 lg:h-9 xl:w-16 xl:h-16 rounded-full bg-blue-300 border-2 border-white shrink-0">
+                      <Image
+                        src="/images/home/hired-people2.webp"
+                        alt="People Hired"
+                        width={64}
+                        height={64}
+                        className="object-cover"
+                        fetchPriority="high"
+                      />
+                    </div>
+                    <div className="w-7 h-7 lg:w-9 lg:h-9 xl:w-16 xl:h-16 rounded-full bg-dark border-2 border-white flex items-center justify-center text-white text-[9px] lg:text-xs xl:text-base font-semibold shrink-0">
+                      2k+
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-0.5 lg:gap-1 whitespace-nowrap">
+                    <p className="text-[11px] lg:text-xs xl:text-base font-medium text-dark/50 leading-4 xl:leading-6 tracking-[0.25px]">
+                      People Hired
+                    </p>
+                    <p className="text-[11px] lg:text-xs xl:text-base font-semibold text-dark leading-4 xl:leading-6 tracking-[0.25px]">
+                      This Week
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Floating card: Verified Professionals (bottom-left of image) */}
-            <div className="absolute bottom-35 left-6 z-[2] bg-white/80 backdrop-blur-xl shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] rounded-3xl px-6 py-5 max-w-[381px]">
-              <div className="flex items-center gap-2 mb-3">
-                <CheckCircleIcon className="w-6 h-6 text-primary shrink-0" />
-                <p className="text-[20px] font-semibold leading-[30px] tracking-[0.25px] text-primary whitespace-nowrap">
+            <div className="absolute bottom-16 lg:bottom-20 xl:bottom-35 left-4 lg:left-6 z-[2] bg-white/80 backdrop-blur-xl shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] rounded-2xl lg:rounded-3xl px-5 py-4 lg:px-6 lg:py-5 max-w-[300px] lg:max-w-[340px] xl:max-w-[381px]">
+              <div className="flex items-center gap-2 mb-2 lg:mb-3">
+                <CheckCircleIcon className="w-5 h-5 lg:w-6 lg:h-6 text-primary shrink-0" />
+                <p className="text-base lg:text-lg xl:text-[20px] font-semibold leading-6 lg:leading-7 xl:leading-[30px] tracking-[0.25px] text-primary whitespace-nowrap">
                   Verified Professionals
                 </p>
               </div>
-              <p className="text-base text-dark/80 leading-6 tracking-[0.25px]">
+              <p className="text-sm lg:text-base text-dark/80 leading-5 lg:leading-6 tracking-[0.25px]">
                 Our thoroughly vetted experts ensure your home is safe and
                 spotless.
               </p>
-            </div>
-
-            {/* Floating card: People Hired (top-right of image) */}
-            <div className="absolute top-[44%] right-6 z-[2] bg-white/80 backdrop-blur-xl shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] rounded-3xl px-6 py-5">
-              <div className="flex items-center gap-4">
-                <div className="flex -space-x-6 shrink-0">
-                  <div className="w-16 h-16 rounded-full bg-orange-300 border-2 border-white shrink-0">
-                    <Image
-                      src="/images/home/hired-people1.webp"
-                      alt="People Hired"
-                      width={64}
-                      height={64}
-                      className="object-cover"
-                      fetchPriority="high"
-                    />
-                  </div>
-                  <div className="w-16 h-16 rounded-full bg-blue-300 border-2 border-white shrink-0">
-                    <Image
-                      src="/images/home/hired-people2.webp"
-                      alt="People Hired"
-                      width={64}
-                      height={64}
-                      className="object-cover"
-                      fetchPriority="high"
-                    />
-                  </div>
-                  <div className="w-16 h-16 rounded-full bg-dark border-2 border-white flex items-center justify-center text-white text-base font-semibold shrink-0">
-                    2k+
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <p className="text-base font-medium text-dark/50 leading-6 tracking-[0.25px]">
-                    People Hired
-                  </p>
-                  <p className="text-base font-semibold text-dark leading-6 tracking-[0.25px]">
-                    This Month
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

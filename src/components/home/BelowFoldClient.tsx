@@ -28,11 +28,15 @@ const HowItWorksSection = dynamic(() =>
 const DomesticServicesSection = dynamic(() =>
   import("./DomesticServicesSection").then((m) => m.DomesticServicesSection),
 );
+const SubscriptionPlansSection = dynamic(() =>
+  import("./SubscriptionPlansSection").then((m) => m.SubscriptionPlansSection),
+);
 
 export function BelowFoldClient({ featuredJobs }: { featuredJobs: FeaturedJob[] }) {
   return (
     <>
       <AvailableMaidsSection featuredJobs={featuredJobs} />
+      <SubscriptionPlansSection />
       <WhyChooseUsSection />
       <HowItWorksSection />
       <TeamSection />

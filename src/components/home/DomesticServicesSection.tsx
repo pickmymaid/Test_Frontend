@@ -1,4 +1,4 @@
-import { Sparkles, Baby, Clock, HeartHandshake } from "lucide-react";
+import { Sparkles, Baby, Clock, HeartHandshake, Check } from "lucide-react";
 import { SectionHeader } from "../ui/SectionHeader";
 import type { LucideIcon } from "lucide-react";
 
@@ -55,48 +55,32 @@ const services: {
   },
 ];
 
-function ServiceCard({
-  icon: Icon,
-  title,
-  intro,
-  items,
-  index,
-}: (typeof services)[number] & { index: number }) {
+function ServiceCard({ icon: Icon, title, intro, items }: (typeof services)[number]) {
   return (
-    <div className="bg-[#F5F5F5] rounded-3xl p-7 lg:p-9 flex flex-col gap-6">
-      {/* Top row: icon box + editorial number */}
-      <div className="flex items-start justify-between">
-        <div className="w-12 h-12 rounded-2xl bg-white shadow-[0px_2px_12px_rgba(0,0,0,0.06)] flex items-center justify-center shrink-0">
-          <Icon className="w-6 h-6 text-primary" strokeWidth={1.5} />
-        </div>
-        <span
-          aria-hidden="true"
-          className="text-5xl font-bold leading-none text-dark/[0.07] tabular-nums select-none"
-        >
-          {String(index + 1).padStart(2, "0")}
-        </span>
+    <div className="group bg-white hover:bg-primary rounded-3xl border border-gray-100 hover:border-primary p-7 lg:p-8 flex flex-col gap-6 shadow-[0px_19px_40px_0px_rgba(0,0,0,0.05)] transition-colors duration-300">
+      <div className="w-16 h-16 lg:w-18 lg:h-18 rounded-2xl bg-primary-50 group-hover:bg-white/15 flex items-center justify-center shrink-0 transition-colors duration-300">
+        <Icon className="w-8 h-8 lg:w-9 lg:h-9 text-primary group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
       </div>
 
-      {/* Title + intro */}
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-xl lg:text-2xl font-bold text-dark">{title}</h3>
-        <p className="text-sm text-muted leading-relaxed">{intro}</p>
+        <h3 className="text-xl lg:text-2xl font-bold text-dark group-hover:text-white transition-colors duration-300">{title}</h3>
+        <p className="text-sm text-muted group-hover:text-white/80 leading-relaxed transition-colors duration-300">{intro}</p>
       </div>
 
-      {/* Divider */}
-      <div className="h-px bg-gray-200" />
+      <div className="h-px bg-gray-100 group-hover:bg-white/20 transition-colors duration-300" />
 
-      {/* Items as chips */}
-      <div className="flex flex-wrap gap-2">
+      <ul className="flex flex-col gap-3">
         {items.map((item) => (
-          <span
-            key={item}
-            className="px-3.5 py-1.5 bg-white rounded-xl text-xs font-medium text-dark border border-gray-100 shadow-[0px_1px_4px_rgba(0,0,0,0.04)]"
-          >
-            {item}
-          </span>
+          <li key={item} className="flex items-start gap-2.5">
+            <span className="mt-0.5 w-5 h-5 rounded-full bg-primary-50 group-hover:bg-white/20 text-primary group-hover:text-white flex items-center justify-center shrink-0 transition-colors duration-300">
+              <Check className="w-3 h-3" strokeWidth={2.5} />
+            </span>
+            <span className="text-sm text-dark/75 group-hover:text-white/90 leading-relaxed tracking-[0.25px] transition-colors duration-300">
+              {item}
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
@@ -107,15 +91,15 @@ export function DomesticServicesSection() {
       className="py-12 lg:py-20 bg-white"
       aria-label="Domestic Helper Services"
     >
-      <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
         <SectionHeader
           breadcrumb="Our Services"
           heading="Domestic Helper Services for UAE Families"
           subheading="We connect UAE families with the right domestic help for their specific needs. Whether you need maid services UAE, a nanny, or someone for a specific role — you will find them here."
         />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
-          {services.map((service, i) => (
-            <ServiceCard key={service.title} {...service} index={i} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6">
+          {services.map((service) => (
+            <ServiceCard key={service.title} {...service} />
           ))}
         </div>
       </div>

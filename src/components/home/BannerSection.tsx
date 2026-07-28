@@ -9,7 +9,7 @@ export function BannerSection() {
   return (
     <section
       style={{ background: "linear-gradient(135deg, #e86a3c 0%, #FF7442 100%)" }}
-      className="py-10 lg:py-18 relative overflow-hidden"
+      className="py-10 lg:py-28 relative overflow-hidden "
       aria-label="Social proof banner"
     >
       {/* Subtle ambient glow */}
@@ -23,38 +23,38 @@ export function BannerSection() {
         className="absolute inset-0 pointer-events-none"
       />
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10">
 
         {/* ── Desktop ── */}
-        <div className="hidden lg:flex items-center justify-between gap-30">
+        <div className="hidden lg:grid grid-cols-[auto_1fr_auto] items-center gap-10 xl:gap-16">
           {/* Left: Featured on + logo */}
           <div className="flex flex-col gap-7 shrink-0">
-            <p className="text-lg font-light font-medium text-white/80 tracking-[0.13px]">
+            <p className="text-lg  xl:text-3xl font-medium text-white/80 tracking-[0.13px]">
               Featured on
             </p>
             <Image
               src="/images/home/khaleej logo.svg"
               alt="Khaleej Times"
-              width={240}
-              height={57}
+              width={290}
+              height={87}
               className="w-55 h-auto"
               loading="lazy"
             />
           </div>
 
           {/* Center: left border + headline */}
-          <div className="flex-1 flex items-center justify-between gap-10 border-l-1 border-white pl-10">
-            <h2 className="flex-1 text-[40px] font-medium text-white max-w-[500px] leading-13.5 tracking-[-1px]">
-              5,900 Families Found perfect maid through{" "}
-              <span className="font-semibold">Pickmymaid</span>
+          <div className="border-l-1 border-white pl-10">
+            <h2 className="text-[30px] xl:text-[50px] font-light text-white max-w-[800px] leading-14.5 tracking-[-1px]">
+              5,900 Families Found perfect maid {" "}
+              <span className="font-semibold">through Pickmymaid</span>
             </h2>
+          </div>
 
-            {/* Right: CTA */}
-            <div className="shrink-0">
-              <a href={ARTICLE_URL} target="_blank" rel="noopener noreferrer">
-                <SplitButton label="View Article" variant="secondary" />
-              </a>
-            </div>
+          {/* Right: CTA */}
+          <div className="shrink-0">
+            <a href={ARTICLE_URL} target="_blank" rel="noopener noreferrer">
+              <SplitButton label="View Article" variant="secondary" />
+            </a>
           </div>
         </div>
 

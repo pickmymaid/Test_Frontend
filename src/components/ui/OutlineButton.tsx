@@ -19,7 +19,7 @@ interface OutlineButtonProps {
  * Arc runs from top-right → curves left → back to bottom-right.
  * Acts as the concave left border of the children section.
  */
-function WaveLeft({ stroke }: { stroke?: string }) {
+export function WaveLeft({ stroke }: { stroke?: string }) {
   return (
     <svg width='13' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 56">
       <path
@@ -36,7 +36,7 @@ function WaveLeft({ stroke }: { stroke?: string }) {
  * Outlined wave for curve="right" (mirrored).
  * Acts as the concave right border of the children section.
  */
-function WaveRight({ stroke }: { stroke?: string }) {
+export function WaveRight({ stroke }: { stroke?: string }) {
   return (
     <svg 
       width='13' 

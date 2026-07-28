@@ -29,7 +29,7 @@ export async function BlogSection() {
 
   try {
     const res = await getBlogs(1);
-    posts = (res.data?.blogs ?? []).slice(0, 3).map((blog) => ({
+    posts = (res.data?.blogs ?? []).slice(0, 4).map((blog) => ({
       image: thumbnailSrc(blog.thumbnail),
       date: formatDate(blog.editedAt),
       title: blog.title,
@@ -43,19 +43,19 @@ export async function BlogSection() {
 
   return (
     <section
-      className="py-[60px] lg:py-20 bg-[#fafafa]"
+      className="py-[10px] lg:py-20 bg-[#fafafa]"
       aria-label="Latest Blogs"
     >
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
         {/* Mobile layout */}
-        <div className="flex flex-col gap-10 lg:hidden">
+        <div className="flex flex-col gap-10 md:hidden">
           <div className="flex flex-col gap-6 items-center text-center">
             <div className="flex items-center gap-2 text-dark/80 text-xs font-medium">
               <ChevronsRight className="w-4 h-4" />
-              <span>Latest Blogs</span>
+              <span className="text-lg font-medium">Latest Blogs</span>
             </div>
             <div className="flex flex-col gap-3">
-              <h2 className="text-2xl font-bold text-dark leading-tight tracking-[-0.25px]">
+              <h2 className="text-2xl font-regular text-dark leading-tight tracking-[-0.25px]">
                 Your Guide to Finding the Perfect Maid
               </h2>
               <p className="text-sm text-dark/80 leading-relaxed">
@@ -67,27 +67,27 @@ export async function BlogSection() {
               <SplitButton label="Explore More" href="/blog" />
             </div>
           </div>
-          <div className="flex flex-col gap-6">
-            {posts.map((post) => (
+          <div className="grid grid-cols-1 gap-6">
+            {posts.slice(0, 3).map((post) => (
               <BlogCard key={post.href} {...post} />
             ))}
           </div>
         </div>
 
-        {/* Desktop layout */}
-        <div className="hidden lg:flex lg:flex-col lg:gap-20">
+        {/* Tablet & up layout */}
+        <div className="hidden md:flex md:flex-col gap-16 lg:gap-20">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-1 text-muted text-xs font-medium">
-            <ChevronsRight className="w-4 h-4" />
-            <span>Latest Blogs</span>
+          <div className="flex justify-center md:justify-normal items-center gap-1 text-muted text-xs font-medium mb-4 lg:mb-6">
+            <ChevronsRight className="w-8 h-8  md:w-11 md:h-11 font-thin" />
+            <span className='text-lg  font-medium'>Latest Blogs</span>
           </div>
 
-          {/* Split header: heading left, description + button right */}
-          <div className="flex items-start justify-between gap-16">
-            <h2 className="text-5xl font-bold text-dark leading-[62px] tracking-[-1px] max-w-[480px]">
-              Your Guide to Finding the Perfect Maid
+          {/* Header: heading + description/button, stacked until lg */}
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-medium text-dark leading-tight lg:leading-[62px] tracking-[-1px] max-w-[580px]">
+              Your Guide to Finding the  Perfect Maid
             </h2>
-            <div className="flex flex-col gap-6 max-w-[600px] pt-2">
+            <div className="flex flex-col gap-6 max-w-[400px] xl:max-w-[600px] lg:pt-2">
               <p className="text-xl text-dark/80 leading-relaxed">
                 Find expert advice, essential tips, and important updates for
                 hiring and managing a successful domestic helper in your home.
@@ -98,11 +98,16 @@ export async function BlogSection() {
             </div>
           </div>
 
-          {/* 3-column card grid */}
-          <div className="grid grid-cols-3 gap-6">
-            {posts.map((post) => (
+          {/* Card grid — 3 cards everywhere, except a 4th that only shows as a 2x2 at md */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.slice(0, 3).map((post) => (
               <BlogCard key={post.href} {...post} />
             ))}
+            {posts[3] && (
+              <div className="hidden md:block lg:hidden">
+                <BlogCard {...posts[3]} />
+              </div>
+            )}
           </div>
         </div>
       </div>

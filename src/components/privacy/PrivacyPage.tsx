@@ -207,7 +207,7 @@ export function PrivacyPage() {
             </p>
           </section>
 
-          <section className="py-8">
+          <section id="cookies" className="py-8">
             <h2 className="text-base font-semibold text-dark mb-3">
               Cookies and Log Files We Use
             </h2>

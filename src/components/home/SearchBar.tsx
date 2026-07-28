@@ -71,7 +71,11 @@ function SearchButton({
   );
 }
 
-export function SearchBar() {
+export function SearchBar({
+  variant,
+}: {
+  variant: "mobile" | "desktop";
+}) {
   const router = useRouter();
   const [location, setLocation] = useState("Dubai");
   const [type, setType] = useState("Maid");
@@ -93,9 +97,8 @@ export function SearchBar() {
     router.push(`/search?${params.toString()}`);
   };
 
-  return (
-    <>
-      {/* Desktop search bar */}
+  if (variant === "desktop") {
+    return (
       <div className="hidden lg:flex backdrop-blur-[34px] bg-white/70 border border-white rounded-2xl drop-shadow-[0px_19px_20px_rgba(0,0,0,0.1)] mt-10 overflow-hidden p-2">
         {/* Location */}
         <div className="flex-1 px-6 min-w-0">
@@ -158,24 +161,26 @@ export function SearchBar() {
           onClick={handleSearch}
         />
       </div>
+    );
+  }
 
-      {/* Mobile search bar */}
-      <div className="flex lg:hidden backdrop-blur-[34px] bg-white/70 border border-white rounded-2xl drop-shadow-[0px_19px_20px_rgba(0,0,0,0.05)] overflow-hidden">
-        <input
-          type="text"
-          placeholder="Search Keywords"
-          value={mobileQuery}
-          onChange={(e) => setMobileQuery(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleMobileSearch()}
-          className="flex-1 text-base font-medium text-dark placeholder:text-dark/50 pl-4 py-3 bg-transparent border-none outline-none min-w-0 tracking-[0.25px] leading-6"
-          aria-label="Search keywords"
-        />
-        <SplitButton
-          aria-label="Search"
-          icon={<Search />}
-          onClick={handleMobileSearch}
-        />
-      </div>
-    </>
+  return (
+    <div className="flex lg:hidden backdrop-blur-[34px] bg-white/70 border border-white rounded-2xl drop-shadow-[0px_19px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+      <input
+        type="text"
+        placeholder="Search Keywords"
+        value={mobileQuery}
+        onChange={(e) => setMobileQuery(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleMobileSearch()}
+        className="flex-1 text-base font-medium text-dark placeholder:text-dark/50 pl-4 py-3 bg-transparent border-none outline-none min-w-0 tracking-[0.25px] leading-6"
+        aria-label="Search keywords"
+        suppressHydrationWarning
+      />
+      <SplitButton
+        aria-label="Search"
+        icon={<Search />}
+        onClick={handleMobileSearch}
+      />
+    </div>
   );
 }

@@ -120,35 +120,128 @@ export function AvailableMaidsSection({ featuredJobs }: Props) {
     return featuredJobs.map(mapJobToProfile);
   }, [featuredJobs, selectedCountry]);
 
-  return (
-    <section
-      className="py-12 lg:py-16 bg-[#F5F5F5]"
-      aria-label="Available Maids and Nannies"
-    >
-      <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
-        <div className="mb-8">
-          <h2 className="text-2xl text-left lg:text-3xl font-bold text-dark mb-3">
-            Available Maids &amp; Nannies in UAE
-          </h2>
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-muted shrink-0" />
-                <span className="text-sm text-muted">Last Updated: {todayLabel}</span>
-              </div>
+return (
+  <section
+    className="bg-[#F7F7F7] py-14 lg:py-20"
+    aria-label="Available Maids & Nannies"
+  >
+    <div className="mx-auto max-w-[1900px] px-5 sm:px-6 lg:px-10 xl:px-20">
+
+      {/* Header */}
+      <div className="mb-12 lg:mb-16">
+
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+
+          {/* Left */}
+          <div>
+
+            <h2
+              className="
+                text-[26px]
+                md:text-[44px]
+                 lg:text-[35px]
+                xl:text-[50px]
+                font-semibold
+                leading-[1.08]
+                tracking-[-0.03em]
+                text-[#1D1D1F]
+              "
+            >
+              Available Maids & Nannies in UAE
+            </h2>
+
+            <p className="mt-4 text-lg text-[#6B6B6B]">
+              Updated on {todayLabel}
+            </p>
+
+          </div>
+
+          {/* Right */}
+          <div className="flex flex-wrap items-center gap-4">
+
+            {/* Country Dropdown */}
+
+            <div className="relative">
+
+              <button
+                onClick={() => setDropdownOpen((p) => !p)}
+                className="flex h-12 min-w-[220px] items-center justify-between rounded-2xl border border-[#2D2D2D] bg-white px-5 text-[16px] font-medium text-[#2D2D2D]"
+              >
+                <span className="flex gap-2">
+                  <span className="text-[#777]">
+                    Sort by Country
+                  </span>
+
+                  <span>{selectedCountry}</span>
+                </span>
+
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M6 9L12 15L18 9"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 z-50 mt-2 w-full overflow-hidden rounded-2xl border bg-white shadow-xl">
+
+                  {countries.map((country) => (
+                    <button
+                      key={country}
+                      onClick={() => {
+                        setSelectedCountry(country);
+                        setDropdownOpen(false);
+                      }}
+                      className={`block w-full px-5 py-3 text-left transition hover:bg-gray-100 ${
+                        selectedCountry === country
+                          ? "bg-orange-50 font-semibold"
+                          : ""
+                      }`}
+                    >
+                      {country}
+                    </button>
+                  ))}
+
+                </div>
+              )}
+
             </div>
+
             <Link
               href="/search"
-              className="flex items-center gap-1.5 text-xs font-semibold text-primary border border-primary rounded-xl px-4 py-2.5 hover:bg-primary-50 transition-colors shrink-0"
+              className="flex h-12 items-center gap-2 rounded-2xl border border-[#2D2D2D] bg-white px-6 text-[16px] font-semibold text-[#1D1D1D] transition hover:bg-gray-50"
             >
               View All
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
+
           </div>
+
         </div>
-        <MaidsCarousel profiles={profiles} />
+
       </div>
-    </section>
-  );
+
+      {/* Carousel */}
+
+      <MaidsCarousel
+        profiles={
+          selectedCountry === "All"
+            ? profiles
+            : profiles.filter(
+                (profile) => profile.country === selectedCountry
+              )
+        }
+      />
+
+    </div>
+  </section>
+);
 }

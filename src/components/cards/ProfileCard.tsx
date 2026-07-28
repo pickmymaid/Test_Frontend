@@ -16,7 +16,6 @@ import { toast } from "sonner";
 import { CheckCircleIcon } from "@/components/icons/CheckCircleIcon";
 import { HeartStraight } from "../icons/HeartStraight";
 import { SplitButton } from "../ui/SplitButton";
-import { OutlineButton } from "../ui/OutlineButton";
 import { useAuthStore, useSubscription } from "@/store/auth";
 import { toggleWishlist, trackCategoryUsage } from "@/lib/api";
 import { HireModal } from "./HireModal";
@@ -59,17 +58,6 @@ function slugify(str: string) {
     .replace(/^-|-$/g, "");
 }
 
-function formatPostedOn(iso?: string): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return "";
-  return d.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
 const flagMap = (country: string) => {
   const base = "/images/national-flags/";
   return country === "Srilanka"
@@ -107,14 +95,14 @@ function InfoRow({
   value: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-2 bg-[#f5f5f5] px-3 py-2 rounded-lg">
+    <div className="flex items-center justify-between gap-2 bg-[#f5f5f5] px-3 py-3 rounded-lg">
       <div className="flex items-center gap-2 shrink-0">
         <span className="text-dark/50">{icon}</span>
-        <span className="text-xs font-medium text-dark tracking-[0.5px]">
+        <span className="text-sm font-medium text-dark tracking-[0.5px]">
           {label}
         </span>
       </div>
-      <span className="text-xs font-medium text-dark/60 text-right truncate tracking-[0.5px]">
+      <span className="text-sm font-medium text-dark/60 text-right truncate tracking-[0.5px]">
         {value}
       </span>
     </div>
@@ -199,7 +187,7 @@ export function ProfileCard({ profile }: { profile: Profile }) {
     <>
       {/* ── Card ───────────────────────────────────────────────── */}
       <div
-        className="bg-white rounded-3xl p-6 flex flex-col gap-5 cursor-pointer shadow-[0px_1px_4px_rgba(0,0,0,0.06),0px_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0px_2px_8px_rgba(0,0,0,0.08),0px_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-200"
+        className="bg-white rounded-3xl overflow-hidden flex flex-col cursor-pointer   transition-shadow duration-200"
         onClick={() => {
           trackProfile();
           saveNavContext();
@@ -207,81 +195,84 @@ export function ProfileCard({ profile }: { profile: Profile }) {
         }}
       >
         {/* ── Image container ── */}
-        <div className="relative rounded-xl overflow-hidden aspect-square shrink-0">
-          {profile.image ? (
-            <Image
-              src={profile.image}
-              alt={`${profile.name} profile photo`}
-              fill
-              sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1280px) 50vw, 25vw"
-              className="object-cover object-top"
-            />
-          ) : (
-            <div
-              className={`absolute inset-0 bg-gradient-to-b ${profile.imageBg}`}
-            />
-          )}
+        <div className="relative mb-8 shrink-0">
+          <div className="relative overflow-hidden aspect-[2/2]">
+            {profile.image ? (
+              <Image
+                src={profile.image}
+                alt={`${profile.name} profile photo`}
+                fill
+                sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1280px) 50vw, 25vw"
+                className="object-cover object-top grayscale"
+              />
+            ) : (
+              <div
+                className={`absolute inset-0 bg-gradient-to-b ${profile.imageBg} grayscale`}
+              />
+            )}
 
-          {/* Bottom gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
+            {/* Bottom gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
 
-          {/* Overlay content */}
-          <div className="absolute inset-0 p-3 flex flex-col justify-between">
-            {/* Top row: badge + heart */}
-            <div className="flex items-start justify-between">
-              {profile.availability === "Not Available" ? (
-                <div className="flex items-center gap-1 bg-dark/80 backdrop-blur-sm shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] text-white/80 text-xs font-medium px-3 py-2 rounded-full leading-none tracking-[0.5px]">
-                  <Check className="w-3 h-3 shrink-0" strokeWidth={2.5} />
-                  Hired
+            {/* Overlay content */}
+            <div className="absolute inset-0 p-3 flex flex-col justify-between">
+              {/* Top row: badge */}
+              <div className="flex items-start justify-between">
+                {profile.availability === "Not Available" ? (
+                  <div className="flex items-center gap-1 bg-dark/80 backdrop-blur-sm shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] text-white/80 text-xs font-medium px-3 py-2 rounded-full leading-none tracking-[0.5px]">
+                    <Check className="w-3 h-3 shrink-0" strokeWidth={2.5} />
+                    Hired
+                  </div>
+                ) : profile.isNew ? (
+                  <div className="bg-[#6DA544] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] text-white text-sm xl:text-md font-light px-5 py-3 rounded-full leading-none tracking-[0.5px]">
+                    New Profile
+                  </div>
+                ) : (
+                  <span />
+                )}
+              </div>
+
+              {/* Bottom row: flag tag */}
+              <div className="flex items-end justify-end">
+                <div className="flex items-center gap-2 bg-black/60 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] backdrop-blur-sm px-3 py-2 rounded-full">
+                  <Image
+                    src={flagMap(profile.country)}
+                    width={20}
+                    height={20}
+                    alt={nationalityMap(profile.country)}
+                  />
+                  <span className="text-xs font-medium text-white tracking-[0.5px]">
+                    {nationalityMap(profile.country)}
+                  </span>
                 </div>
-              ) : (
-                <div className="bg-[#6DA544] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] text-white text-xs font-medium px-3 py-2 rounded-full leading-none tracking-[0.5px]">
-                  New Profile
-                </div>
-              )}
-
-              {/* Heart / wishlist */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFavorite();
-                }}
-                disabled={isPending}
-                className="bg-white/20 backdrop-blur-sm shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] p-2.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer disabled:opacity-50"
-                aria-label={
-                  saved ? "Remove from favourites" : "Add to favourites"
-                }
-              >
-                <HeartStraight className="w-5 h-5 text-white" filled={saved} />
-              </button>
-            </div>
-
-            {/* Bottom row: posted date + flag tag */}
-            <div className="flex items-end justify-between">
-              {profile.postedOn ? (
-                <p className="text-[11px] font-medium text-white/80 tracking-[0.5px]">
-                  Posted On : {formatPostedOn(profile.postedOn)}
-                </p>
-              ) : (
-                <span />
-              )}
-              <div className="flex items-center gap-2 bg-white/10 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)] backdrop-blur-sm px-3 py-2 rounded-full">
-                <Image
-                  src={flagMap(profile.country)}
-                  width={20}
-                  height={20}
-                  alt={nationalityMap(profile.country)}
-                />
-                <span className="text-xs font-medium text-white tracking-[0.5px]">
-                  {nationalityMap(profile.country)}
-                </span>
               </div>
             </div>
           </div>
+
+          {/* Avatar — overlaps the bottom edge of the hero photo */}
+          <div className="absolute -bottom-8 left-4 w-19 h-19 rounded-full  overflow-hidden shadow-sm shrink-0">
+            {profile.image ? (
+              <Image
+                src={profile.image}
+                alt={`${profile.name} avatar`}
+                fill
+                sizes="64px"
+                className="object-cover object-top"
+              />
+            ) : (
+              <div
+                className={`w-full h-full flex items-center justify-center text-sm font-semibold text-dark ${profile.avatarBg}`}
+              >
+                {profile.initials}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* ── Name + play button ── */}
+        {/* ── Content ── */}
+        <div className="flex flex-col gap-5 px-6 pb-6">
+
+        {/* ── Name + heart ── */}
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
             <h3 className="text-[20px] font-semibold text-[#212121] line-clamp-1 leading-[30px] tracking-[0.25px]">
@@ -295,44 +286,42 @@ export function ProfileCard({ profile }: { profile: Profile }) {
             </div>
           </div>
 
-          {hasVideo && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setVideoOpen(true);
-              }}
-              className="w-14 h-14 rounded-full bg-primary/90 border-2 border-white shadow-[inset_1px_1px_2px_rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 hover:bg-primary transition-colors cursor-pointer"
-              aria-label="Watch video"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="white"
-                className="w-6 h-6"
-                aria-hidden
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </button>
-          )}
+          {/* Heart / wishlist */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFavorite();
+            }}
+            disabled={isPending}
+            className="p-2.5 rounded-full border border-[#e5e5e5] hover:bg-[#f5f5f5] transition-colors cursor-pointer disabled:opacity-50 shrink-0"
+            aria-label={saved ? "Remove from favourites" : "Add to favourites"}
+          >
+            <HeartStraight className="w-5 h-5 text-dark" filled={saved} />
+          </button>
         </div>
 
         {/* ── Info rows ── */}
         <div className="flex flex-col gap-1">
           <InfoRow
-            icon={<Briefcase className="w-4 h-4" />}
+            icon={<Briefcase className="w-5 h-5" />}
             label="Experience"
             value={profile.experience}
           />
           <InfoRow
-            icon={<Wallet className="w-4 h-4" />}
+            icon={<Wallet className="w-5 h-5" />}
             label="Desired Salary"
             value={profile.desiredSalary}
           />
           <InfoRow
-            icon={<GraduationCap className="w-4 h-4" />}
+            icon={<GraduationCap className="w-5 h-5" />}
             label="Desired Job"
             value={profile.desiredJob}
+          />
+          <InfoRow
+            icon={<Timer className="w-5 h-5" />}
+            label="Availability"
+            value={profile.availability}
           />
         </div>
 
@@ -349,9 +338,14 @@ export function ProfileCard({ profile }: { profile: Profile }) {
               saveNavContext();
             }}
           />
-          <OutlineButton curve="right" className="w-full" onClick={handleHire}>
-            <span className="whitespace-nowrap w-full">Hire Me</span>
-          </OutlineButton>
+          <button
+            type="button"
+            onClick={hasVideo ? () => setVideoOpen(true) : handleHire}
+            className="w-full rounded-2xl border border-[#d9d9d9] px-4 py-3 lg:py-4 text-sm font-semibold text-dark whitespace-nowrap hover:bg-[#f5f5f5] transition-colors cursor-pointer"
+          >
+            {hasVideo ? "Watch Video" : "Hire Me"}
+          </button>
+        </div>
         </div>
       </div>
 

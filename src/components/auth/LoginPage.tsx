@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff, Mail, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth";
 import { loginCustomer, verifyAuth, getPaymentDetails } from "@/lib/api";
@@ -18,7 +18,6 @@ const APPLE_URL  = `${API_BASE}/v2/auth/apple`;
 
 /* ─── Types ─────────────────────────────────────────────────── */
 
-type LoginStep = "methods" | "email";
 interface EmailForm { email: string; password: string }
 
 /* ─── SVG Icons ─────────────────────────────────────────────── */
@@ -74,9 +73,8 @@ export function LoginPage() {
 
   const rawReturn = searchParams.get("returnTo") ?? "";
   // Sanitise: only allow relative paths to prevent open redirect
-  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/search";
+  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/#pricing";
 
-  const [step, setStep] = useState<LoginStep>("methods");
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -178,36 +176,15 @@ export function LoginPage() {
 
           {/* Header */}
           <div>
-            {step === "email" ? (
-              <div className="flex items-center gap-3 mb-7">
-                <button
-                  type="button"
-                  onClick={() => { setStep("methods"); setServerError(null); }}
-                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors shrink-0"
-                  aria-label="Back"
-                >
-                  <ArrowLeft className="w-4 h-4 text-dark" strokeWidth={2} />
-                </button>
-                <div>
-                  <h1 className="text-2xl font-bold text-dark tracking-[-0.5px]">
-                    Continue with Email
-                  </h1>
-                  <p className="text-sm text-muted mt-0.5">
-                    Enter your credentials to log in.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="mb-8">
-                <p className="text-primary font-bold text-lg mb-1 lg:hidden">Pickmymaid</p>
-                <h1 className="text-2xl font-bold text-dark tracking-[-0.5px]">
-                  Login to your account
-                </h1>
-                <p className="text-sm text-muted mt-1 leading-relaxed">
-                  Select a payment plan after login to access maid contact details.
-                </p>
-              </div>
-            )}
+            <div className="mb-8">
+              <p className="text-primary font-bold text-lg mb-1 lg:hidden">Pickmymaid</p>
+              <h1 className="text-2xl font-bold text-dark tracking-[-0.5px]">
+                Login to your account
+              </h1>
+              <p className="text-sm text-muted mt-1 leading-relaxed">
+                Select a payment plan after login to access maid contact details.
+              </p>
+            </div>
 
             {/* Server error */}
             {serverError && (
@@ -216,105 +193,95 @@ export function LoginPage() {
               </div>
             )}
 
-            {/* ── Step 1: method selection ── */}
-            {step === "methods" && (
-              <div className="flex flex-col gap-3">
-                <MethodButton
-                  icon={<GoogleIcon />}
-                  label="Continue with Google"
-                  onClick={handleGoogle}
+            {/* ── Email form ── */}
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
+              {/* Email */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="email" className="text-sm font-medium text-dark">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="sarah@example.com"
+                  autoComplete="email"
+                  autoFocus
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Enter a valid email address",
+                    },
+                  })}
+                  className={inputCls(!!errors.email)}
                 />
-                <MethodButton
-                  icon={<AppleIcon />}
-                  label="Continue with Apple"
-                  onClick={handleApple}
-                />
-
-                {/* Divider */}
-                <div className="flex items-center gap-3 my-1">
-                  <div className="flex-1 h-px bg-gray-100" />
-                  <span className="text-xs text-muted font-medium">or</span>
-                  <div className="flex-1 h-px bg-gray-100" />
-                </div>
-
-                <MethodButton
-                  icon={<Mail className="w-5 h-5 shrink-0 text-primary" strokeWidth={1.75} />}
-                  label="Continue with Email"
-                  onClick={() => setStep("email")}
-                />
+                {errors.email && (
+                  <p className="text-xs text-red-500">{errors.email.message}</p>
+                )}
               </div>
-            )}
 
-            {/* ── Step 2: email form ── */}
-            {step === "email" && (
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
-                {/* Email */}
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="email" className="text-sm font-medium text-dark">
-                    Email Address
-                  </label>
+              {/* Password */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="password" className="text-sm font-medium text-dark">
+                  Password
+                </label>
+                <div className="relative">
                   <input
-                    id="email"
-                    type="email"
-                    placeholder="sarah@example.com"
-                    autoComplete="email"
-                    autoFocus
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Enter a valid email address",
-                      },
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Your password"
+                    autoComplete="current-password"
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: { value: 6, message: "Password must be at least 6 characters" },
                     })}
-                    className={inputCls(!!errors.email)}
+                    className={`${inputCls(!!errors.password)} pr-11`}
                   />
-                  {errors.email && (
-                    <p className="text-xs text-red-500">{errors.email.message}</p>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-dark transition-colors"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword
+                      ? <EyeOff className="w-4 h-4" strokeWidth={1.75} />
+                      : <Eye className="w-4 h-4" strokeWidth={1.75} />}
+                  </button>
                 </div>
+                {errors.password && (
+                  <p className="text-xs text-red-500">{errors.password.message}</p>
+                )}
+              </div>
 
-                {/* Password */}
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="password" className="text-sm font-medium text-dark">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Your password"
-                      autoComplete="current-password"
-                      {...register("password", {
-                        required: "Password is required",
-                        minLength: { value: 6, message: "Password must be at least 6 characters" },
-                      })}
-                      className={`${inputCls(!!errors.password)} pr-11`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-dark transition-colors"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword
-                        ? <EyeOff className="w-4 h-4" strokeWidth={1.75} />
-                        : <Eye className="w-4 h-4" strokeWidth={1.75} />}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="text-xs text-red-500">{errors.password.message}</p>
-                  )}
-                </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-1 w-full py-3.5 rounded-2xl bg-primary text-white font-semibold text-sm tracking-wide hover:bg-primary-600 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {isSubmitting ? "Logging in…" : "Log In"}
+              </button>
+            </form>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="mt-1 w-full py-3.5 rounded-2xl bg-primary text-white font-semibold text-sm tracking-wide hover:bg-primary-600 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-                >
-                  {isSubmitting ? "Logging in…" : "Log In"}
-                </button>
-              </form>
-            )}
+            {/* Divider */}
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-1 h-px bg-gray-100" />
+              <span className="text-xs text-muted font-medium">or</span>
+              <div className="flex-1 h-px bg-gray-100" />
+            </div>
+
+            {/* ── OAuth methods ── */}
+            <div className="flex flex-col gap-3">
+              <MethodButton
+                icon={<GoogleIcon />}
+                label="Continue with Google"
+                onClick={handleGoogle}
+              />
+              <MethodButton
+                icon={<AppleIcon />}
+                label="Continue with Apple"
+                onClick={handleApple}
+              />
+            </div>
           </div>
 
           {/* Footer */}

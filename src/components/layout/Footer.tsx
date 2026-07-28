@@ -157,7 +157,7 @@ function NavColumn({
       className={`flex flex-col gap-4 ${centered ? "items-center" : "items-start"}`}
     >
       <p
-        className={`text-white font-medium text-base lg:text-lg ${centered ? "text-center" : ""}`}
+        className={`text-white font-medium text-xl lg:text-lg ${centered ? "text-center" : ""}`}
       >
         {heading}
       </p>
@@ -168,7 +168,7 @@ function NavColumn({
           <li key={link.href}>
             <Link
               href={link.href}
-              className={`text-white/80 text-sm lg:text-base py-1 block hover:text-white transition-colors ${centered ? "text-center" : ""}`}
+              className={`text-white/80 text-xl lg:text-base py-1 block hover:text-white transition-colors ${centered ? "text-center" : ""}`}
             >
               {link.label}
             </Link>
@@ -182,11 +182,11 @@ function NavColumn({
 export function Footer() {
   return (
     <footer style={{ backgroundColor: "#e86a3c" }}>
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20 overflow-x-hidden">
         {/* ── Mobile layout ── */}
         <div className="lg:hidden py-[60px] flex flex-col gap-10">
           {/* Logo + contact */}
-          <div className="flex flex-col gap-6 items-center text-center">
+          <div className="flex flex-col gap-6 items-start text-left">
             <Image
               src="/logo orange.webp"
               alt="Pickmymaid"
@@ -195,36 +195,36 @@ export function Footer() {
               className="brightness-0 invert h-auto"
               priority
             />
-            <p className="text-sm text-white/80 leading-6 max-w-xs">
+            <p className="text-xl text-white/80 leading-8">
               Pickmymaid is the UAE&apos;s No 1 platform for finding trusted maids and nannies across Dubai, Abu Dhabi, Sharjah, and beyond. Browse detailed profiles with real recommendations, connect directly with helpers, and make confident hiring decisions — all without paying a single dirham in agency fees. No middlemen, no inflated costs, just the right person for your home.
             </p>
-            <div className="flex flex-col gap-3 items-center">
+            <div className="flex flex-col gap-3 items-start">
               {contactInfo.map(({ icon: Icon, label, href }) =>
                 href ? (
                   <a key={label} href={href} className="flex items-start gap-2 text-white/80 hover:text-white transition-colors">
-                    <Icon className="w-4 h-4 shrink-0 mt-0.5" strokeWidth={1.75} />
-                    <span className="text-sm">{label}</span>
+                    <Icon className="w-6 h-6 shrink-0 mt-0.5" strokeWidth={1.75} />
+                    <span className="text-xl">{label}</span>
                   </a>
                 ) : (
                   <div key={label} className="flex items-start gap-2 text-white/80">
-                    <Icon className="w-4 h-4 shrink-0 mt-0.5" strokeWidth={1.75} />
-                    <span className="text-sm">{label}</span>
+                    <Icon className="w-6 h-6 shrink-0 mt-0.5" strokeWidth={1.75} />
+                    <span className="text-xl">{label}</span>
                   </div>
                 )
               )}
             </div>
           </div>
 
-          {/* Nav columns — centered, stacked */}
-          <div className="flex flex-col gap-8 items-center border-b border-white/20 pb-10">
+          {/* Nav columns — left-aligned, stacked */}
+          <div className="flex flex-col gap-8 items-start border-b border-white/20 pb-10">
             {navColumns.map((col) => (
-              <NavColumn key={col.heading} {...col} centered />
+              <NavColumn key={col.heading} {...col} />
             ))}
           </div>
 
           {/* Bottom: copyright → social → legal */}
-          <div className="flex flex-col gap-8 items-center">
-            <p className="text-white text-base text-center">
+          <div className="flex flex-col gap-8 items-start">
+            <p className="text-white text-xl text-left">
               © 2026 Pick My Maid. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
@@ -239,12 +239,12 @@ export function Footer() {
                 </a>
               ))}
             </div>
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-start gap-3">
               {legalLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-white text-base hover:text-white/70 transition-colors"
+                  className="text-white text-xl hover:text-white/70 transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -256,7 +256,7 @@ export function Footer() {
         {/* ── Desktop layout ── */}
         <div className="hidden lg:flex lg:flex-col gap-20 pt-[120px] pb-20">
           {/* Top: logo + newsletter | nav columns */}
-          <div className="flex items-start justify-between gap-16 pb-20 border-b border-white/20">
+          <div className="flex flex-wrap items-start justify-between gap-x-16 gap-y-10 pb-20 border-b border-white/20">
             {/* Left: logo + tagline */}
             <div className="flex flex-col gap-5 shrink-0 max-w-96">
               <Image
@@ -273,7 +273,7 @@ export function Footer() {
             </div>
 
             {/* Right: nav columns + contact */}
-            <div className="flex gap-10 xl:gap-16">
+            <div className="flex flex-wrap gap-x-10 gap-y-8 xl:gap-x-16">
               {navColumns.map((col) => (
                 <NavColumn key={col.heading} {...col} />
               ))}
@@ -301,7 +301,7 @@ export function Footer() {
           </div>
 
           {/* Bottom: copyright | social | legal */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
             <p className="text-white text-base whitespace-nowrap">
               © {new Date().getFullYear()} Pick My Maid. All rights reserved.
             </p>

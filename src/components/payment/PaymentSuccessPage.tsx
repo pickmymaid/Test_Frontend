@@ -7,14 +7,14 @@ import { CheckCircle, Mail, ArrowRight } from "lucide-react";
 import { getPaymentDetails } from "@/lib/api";
 import { useAuthStore } from "@/store/auth";
 import { SplitButton } from "@/components/ui/SplitButton";
+import { PLANS } from "@/config/plans.config";
 
 const TIER_MAP = ["basic", "standard", "premium"] as const;
 
-const PLAN_INFO: Record<string, { name: string; duration: string; price: string }> = {
-  basic:    { name: "Basic Plan",    duration: "1 Month",              price: "AED 350" },
-  standard: { name: "Standard Plan", duration: "2 Months",             price: "AED 495" },
-  premium:  { name: "Premium Plan",  duration: "1 Month + Consultant", price: "AED 899" },
-};
+const PLAN_INFO: Record<string, { name: string; duration: string; price: string }> =
+  Object.fromEntries(
+    PLANS.map((plan) => [plan.id, { name: plan.name, duration: plan.duration, price: `AED ${plan.price}` }])
+  );
 
 function formatDate(dateStr: string): string {
   try {
