@@ -240,7 +240,7 @@ export function ProfileCard({ profile }: { profile: Profile }) {
                 </div>
               )}
 
-              {/* Heart / wishlist */}
+          
               <button
                 type="button"
                 onClick={(e) => {
