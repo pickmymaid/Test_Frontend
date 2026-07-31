@@ -69,7 +69,7 @@ function StepCard({
 export function HowItWorksSection() {
   return (
     <section className="py-12 lg:py-20 bg-white" aria-label="How It Works">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
         <SectionHeader
           breadcrumb="How It Works"
           heading="How to Hire a Maid or Nanny in UAE"

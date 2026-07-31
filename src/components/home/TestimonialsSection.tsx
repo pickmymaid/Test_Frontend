@@ -18,38 +18,56 @@ const testimonials: Testimonial[] = [
   {
     id: 1,
     quote:
-      "I was amazed by how quickly Pick My Maid found us the perfect helper. She's become part of our family!",
-    name: "Layla Al Farsi",
-    role: "Parent of two, Sharjah",
-    initials: "LA",
+      "I contacted three agencies. All of them asked for a lot of money just to get started. I could not pay that much. A colleague told me about Pick My Maid. I signed up, looked at a few profiles, and called two maids directly. I hired one within 4 days.",
+    name: "Fatima Rehman, Dubai",
+    role: "Parent of two",
+    initials: "FR",
     avatarBg: "bg-amber-200",
   },
   {
     id: 2,
     quote:
-      "I appreciate the thorough background checks. It gave us peace of mind knowing our home is in safe hands.",
-    name: "Maya Johnson",
-    role: "Career-focused mom, Ajman",
-    initials: "MJ",
+      "Our maid left without notice. My wife was doing everything at home alone. It was very hard. We found Pick My Maid and registered the same night. The profiles had all the details we needed. We called a few candidates and hired someone within a week. Things are much better now",
+    name: "Mohammed Abbas, Abu Dhabi",
+    role: "Career-focused mom",
+    initials: "MA",
     avatarBg: "bg-rose-200",
   },
   {
     id: 3,
     quote:
-      "The team is professional, friendly, and genuinely invested in finding the right match for your family. Highly recommend!",
-    name: "Omar Khalid",
-    role: "Parent of three, Ras Al Khaimah",
-    initials: "OK",
+      "After my delivery I needed a nanny quickly. I did not want to use an agency again. Last time we paid a lot and it did not work out. This time I used Pick My Maid. I filtered by newborn experience, spoke to a few candidates, and found the right person in 5 days. She is great with my baby.",
+    name: "Sarah, Sharjah",
+    role: "Parent of three",
+    initials: "SA",
     avatarBg: "bg-teal-200",
   },
   {
     id: 4,
     quote:
-      "I'm so grateful for Pick My Maid. They truly understand the needs of busy families and deliver exceptional service.",
-    name: "Mohammed Aslam",
-    role: "Parent of two, Sharjah",
-    initials: "MA",
+      "I was looking for a part-time maid for weeks on WhatsApp groups. Nothing worked. My colleague suggested Pick My Maid. I registered, used the filters, and found someone in 3 days. The process was simple and there were no hidden charges.",
+    name: "Priya Mathew, Dubai",
+    role: "Parent of two",
+    initials: "PM",
     avatarBg: "bg-purple-200",
+  },
+  {
+    id: 5,
+    quote:
+      "Finding a reliable helper used to be so stressful. Pick My Maid made it effortless — I had a match within days.",
+    name: "Sarah Al Mansoori",
+    role: "Working mom",
+    initials: "SA",
+    avatarBg: "bg-blue-200",
+  },
+  {
+    id: 6,
+    quote:
+      "The agencies in Ajman wanted a big deposit and said it would take months. We could not wait. We tried Pick My Maid. We paid a small one-time fee, spoke to the maid directly, and she started within 10 days. Thank you!",
+    name: "Omar T, Ajman",
+    role: "Parent of four",
+    initials: "OT",
+    avatarBg: "bg-emerald-200",
   },
 ];
 
@@ -91,9 +109,9 @@ function TestimonialCard({
     >
       <div>
         <Stars/>
-        <p className="text-xl text-white leading-relaxed">"{quote}"</p>
+        <p className="text-md md:text-xl text-white leading-relaxed">"{quote}"</p>
       </div>
-      <div className="flex items-center gap-3 mt-[200px] xl:mt-[280px]">
+      <div className="flex items-center gap-3 mt-[70px] xl:mt-[180px]">
         <div
           className={`w-11 h-11 rounded-full ${avatarBg} flex items-center justify-center flex-shrink-0`}
         >
@@ -149,11 +167,11 @@ export function TestimonialsSection() {
         <div className="mb-10 lg:mb-14">
           <div className="flex flex-col lg:flex-row items-center text-center lg:text-left lg:items-start lg:justify-between gap-3 lg:gap-20">
             <h2 className="text-3xl lg:text-5xl font-medium text-white leading-tight max-w-xl">
-              Check Out What Our Families Are Saying!
+              Real Stories From Real Families
             </h2>
             <p className="text-sm lg:text-lg text-center lg:text-left text-white leading-relaxed lg:max-w-lg lg:pt-2">
-              We ensure your family&apos;s well-being by thoroughly vetting each
-              professional, guaranteeing top-tier service and reliability.
+              Hear directly from families across the UAE who found trusted,
+              verified help through Pick My Maid.
             </p>
           </div>
         </div>

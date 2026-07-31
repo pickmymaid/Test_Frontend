@@ -69,7 +69,7 @@ function PlanCard({
             Processing…
           </>
         ) : (
-          "Buy Plan"
+          "Buy Package"
         )}
       </button>
 
@@ -130,10 +130,7 @@ export function SubscriptionPlansSection() {
     <section
       id="pricing"
       className="py-12 lg:py-20 relative overflow-hidden scroll-mt-20 lg:scroll-mt-24"
-      style={{
-        background:
-          "radial-gradient(80% 60% at 50% 0%, var(--color-primary-50) 0%, #ffffff 70%)",
-      }}
+   
       aria-label="Subscription Plans"
     >
       <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
@@ -142,15 +139,15 @@ export function SubscriptionPlansSection() {
           
            <div className="flex justify-center md:justify-normal items-center gap-1 text-muted text-xs font-medium mb-4 lg:mb-6">
             <ChevronsRight className="w-8 h-8  md:w-11 md:h-11 font-thin" />
-            <span className='text-lg  font-medium'>Subscription Plans</span>
+            <span className='text-lg  font-medium'>Our Packages</span>
           </div>
 
           <div className="flex items-center justify-start">
-            <h2 className="text-3xl lg:text-5xl font-bold text-dark leading-tight">
+            <h2 className="text-3xl lg:text-5xl font-regular text-dark leading-tight">
               Simple and transparent
               <br />
-              <span className="text-primary text-[42px] lg:text-6xl">
-                Pricing
+              <span className="text-primary text-3xl lg:text-5xl">
+                Packages
               </span>
             </h2>
           </div>
@@ -180,7 +177,7 @@ export function SubscriptionPlansSection() {
             href="/pricing"
             className="text-sm font-semibold text-primary hover:underline"
           >
-            View full plan details &amp; FAQs
+            View full package details &amp; FAQs
           </Link>
         </div>
       </div>

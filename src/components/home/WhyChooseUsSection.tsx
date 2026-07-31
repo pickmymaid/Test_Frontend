@@ -64,7 +64,7 @@ function FeatureItem({ icon: Icon, title, description }: { icon: LucideIcon; tit
 export function WhyChooseUsSection() {
   return (
     <section className="py-12 lg:py-20 bg-[#FAFAFA]" aria-label="Why Choose Us">
-      <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
         <SectionHeader
           breadcrumb="Why Choose Us"
           heading="Why UAE Families Trust Pickmymaid"

@@ -71,7 +71,7 @@ export function HowItWorksPage() {
           aria-hidden="true"
         />
 
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16 relative">
+        <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20 relative">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
             <div className="flex justify-center items-center gap-1 text-muted text-xs font-medium mb-4 lg:mb-6">
               <ChevronsRight className="w-4 h-4" />

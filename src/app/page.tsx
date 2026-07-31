@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/home/HeroSection";
-import { StatsSection } from "@/components/home/StatsSection";
 import { BannerSection } from "@/components/home/BannerSection";
 import { BelowFoldClient } from "@/components/home/BelowFoldClient";
 import { HomeJsonLd } from "@/components/home/HomeJsonLd";
@@ -40,9 +39,6 @@ export default async function HomePage() {
     <>
       <HomeJsonLd />
       <HeroSection />
-      <div className="lg:hidden">
-        <StatsSection />
-      </div>
       <BannerSection />
       <BelowFoldClient featuredJobs={featuredJobs} />
       <BlogSection />

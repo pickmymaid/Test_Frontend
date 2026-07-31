@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/Whatsapp";
 
 const WA_LINK =
   "https://wa.me/971566369736?text=Hi%2C%20I%27m%20interested%20in%20hiring%20a%20maid%2Fnanny.";
+const CALL_LINK = "tel:+971566369736";
 
 export function WhatsAppFloatingButton() {
   const [visible, setVisible] = useState(true);
@@ -80,7 +82,30 @@ export function WhatsAppFloatingButton() {
         </span>
       </div>
 
-      {/* Button */}
+      {/* Call button */}
+      <div
+        id="call-button"
+        aria-label="call-button"
+        className="relative pointer-events-auto"
+      >
+        <a
+          href={CALL_LINK}
+          aria-label="Call us"
+          className="relative flex w-11 h-11 lg:w-14 lg:h-14 items-center justify-center rounded-full bg-primary shadow-[0_8px_32px_rgba(255,116,66,0.45)] lg:hover:scale-110 lg:transition-transform lg:duration-200"
+          style={{
+            animation:
+              "wa-enter 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.15s both",
+          }}
+        >
+          <Phone
+            className="w-5 h-5 lg:w-6 lg:h-6 text-white"
+            strokeWidth={1.5}
+            fill="currentColor"
+          />
+        </a>
+      </div>
+
+      {/* WhatsApp button */}
       <div
         id="wa-button"
         aria-label="wa-button"

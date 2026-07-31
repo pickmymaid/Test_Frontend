@@ -6,6 +6,9 @@ import type { FeaturedJob } from "@/types";
 const AvailableMaidsSection = dynamic(() =>
   import("./AvailableMaidsSection").then((m) => m.AvailableMaidsSection),
 );
+const ExploreMaidsSection = dynamic(() =>
+  import("./ExploreMaidsSection").then((m) => m.ExploreMaidsSection),
+);
 const TeamSection = dynamic(() =>
   import("./TeamSection").then((m) => m.TeamSection),
 );
@@ -36,6 +39,7 @@ export function BelowFoldClient({ featuredJobs }: { featuredJobs: FeaturedJob[] 
   return (
     <>
       <AvailableMaidsSection featuredJobs={featuredJobs} />
+      <ExploreMaidsSection />
       <SubscriptionPlansSection />
       <WhyChooseUsSection />
       <HowItWorksSection />

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import { MaidsCarousel } from "./MaidsCarousel";
 import type { Profile } from "@/components/cards/ProfileCard";
 import type { FeaturedJob } from "@/types";
@@ -81,20 +81,6 @@ const todayLabel = new Date().toLocaleDateString("en-US", {
 });
 
 export function AvailableMaidsSection({ featuredJobs }: Props) {
-  const countries = useMemo(() => {
-    const unique = Array.from(
-      new Set(
-        featuredJobs
-          .map((j) => j.nationality ?? j.country)
-          .filter(Boolean) as string[],
-      ),
-    );
-    return ["All", ...unique];
-  }, [featuredJobs]);
-
-  const [selectedCountry, setSelectedCountry] = useState("All");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
   useEffect(() => {
     const currentHref = window.location.pathname + window.location.search;
     const raw = sessionStorage.getItem("pmm-nav-return");
@@ -118,7 +104,7 @@ export function AvailableMaidsSection({ featuredJobs }: Props) {
 
   const profiles = useMemo<Profile[]>(() => {
     return featuredJobs.map(mapJobToProfile);
-  }, [featuredJobs, selectedCountry]);
+  }, [featuredJobs]);
 
 return (
   <section
@@ -159,62 +145,6 @@ return (
           {/* Right */}
           <div className="flex flex-wrap items-center gap-4">
 
-            {/* Country Dropdown */}
-
-            <div className="relative">
-
-              <button
-                onClick={() => setDropdownOpen((p) => !p)}
-                className="flex h-12 min-w-[220px] items-center justify-between rounded-2xl border border-[#2D2D2D] bg-white px-5 text-[16px] font-medium text-[#2D2D2D]"
-              >
-                <span className="flex gap-2">
-                  <span className="text-[#777]">
-                    Sort by Country
-                  </span>
-
-                  <span>{selectedCountry}</span>
-                </span>
-
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-
-              {dropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 w-full overflow-hidden rounded-2xl border bg-white shadow-xl">
-
-                  {countries.map((country) => (
-                    <button
-                      key={country}
-                      onClick={() => {
-                        setSelectedCountry(country);
-                        setDropdownOpen(false);
-                      }}
-                      className={`block w-full px-5 py-3 text-left transition hover:bg-gray-100 ${
-                        selectedCountry === country
-                          ? "bg-orange-50 font-semibold"
-                          : ""
-                      }`}
-                    >
-                      {country}
-                    </button>
-                  ))}
-
-                </div>
-              )}
-
-            </div>
-
             <Link
               href="/search"
               className="flex h-12 items-center gap-2 rounded-2xl border border-[#2D2D2D] bg-white px-6 text-[16px] font-semibold text-[#1D1D1D] transition hover:bg-gray-50"
@@ -231,15 +161,7 @@ return (
 
       {/* Carousel */}
 
-      <MaidsCarousel
-        profiles={
-          selectedCountry === "All"
-            ? profiles
-            : profiles.filter(
-                (profile) => profile.country === selectedCountry
-              )
-        }
-      />
+      <MaidsCarousel profiles={profiles} />
 
     </div>
   </section>

@@ -1,9 +1,13 @@
+
+// second
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 import { StatsSection } from "./StatsSection";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { GoogleGIcon } from "../icons/GoogleG";
+import { Package, UserRound } from "lucide-react";
+import { SplitButton } from "../ui/SplitButton";
 
 export function HeroSection() {
   return (
@@ -33,7 +37,6 @@ export function HeroSection() {
             <h1 className="text-[23px] max-[359px]:text-[20px] sm:text-[32px] md:text-[44px] font-semibold leading-snug tracking-[-0.5px] text-dark">
               Maids In Dubai - Hire Verified <br />
               <span className="text-primary">Maids & Nannies</span> in UAE
-              Quickly
             </h1>
             <p className="text-[14px] sm:text-base text-dark/80 leading-5 sm:leading-6 tracking-[0.5px]">
               Find verified live-out maids, full-time maids, nannies, and caregivers across the UAE, including Dubai, Abu Dhabi, Sharjah, and all emirates.
@@ -45,8 +48,8 @@ export function HeroSection() {
             <SearchBar variant="mobile" />
           </div>
 
-          {/* Maid image + People Hired pill */}
-          <div className="relative w-full z-10 h-[320px] sm:h-[420px] md:h-[520px] mx-auto">
+          {/* Maid image + floating badges */}
+          <div className="relative w-full z-10 h-[380px] sm:h-[480px] md:h-[580px] mx-auto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/home/hero-maid-mobile.webp"
@@ -57,8 +60,32 @@ export function HeroSection() {
               width={400}
               height={400}
             />
+
+            {/* Google Rating badge */}
+            <div className="absolute bottom-[184px] right-2 sm:bottom-[90px] sm:right-6 md:bottom-[104px] z-[2] bg-white/80 backdrop-blur-sm shadow-[inset_0.5px_0.5px_1px_rgba(0,0,0,0.1)] rounded-xl px-2.5 py-2 sm:px-3.5 sm:py-2.5 flex items-center gap-1.5 sm:gap-2">
+              <GoogleGIcon className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
+              <div className="flex flex-col gap-0.5 text-left">
+                <p className="text-[9px] sm:text-[11px] font-medium text-dark/50 leading-3 tracking-[0.25px] whitespace-nowrap">
+                  Google Rating
+                </p>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs sm:text-sm font-bold text-dark leading-4">
+                    4.8
+                  </span>
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-amber-400 fill-amber-400"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* People Hired pill */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/80 backdrop-blur-sm shadow-[inset_0.5px_0.5px_1px_rgba(0,0,0,0.1)] rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 whitespace-nowrap">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[2] flex items-center gap-2 bg-white backdrop-blur-sm shadow-[inset_0.5px_0.5px_1px_rgba(0,0,0,0.1)] rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 whitespace-nowrap">
               <div className="flex -space-x-3 shrink-0">
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-300 border border-white shrink-0">
                   <Image
@@ -93,7 +120,42 @@ export function HeroSection() {
                 </p>
               </div>
             </div>
+
+            {/* Verified Professionals badge */}
+            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-[2] bg-white/80 backdrop-blur-sm shadow-[inset_0.5px_0.5px_1px_rgba(0,0,0,0.1)] rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 max-w-[170px] sm:max-w-[220px]">
+              <div className="flex items-center gap-1.5 mb-1">
+                <CheckCircleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
+                <p className="text-[11px] sm:text-sm font-semibold leading-4 tracking-[0.25px] text-primary whitespace-nowrap">
+                  Verified Professionals
+                </p>
+              </div>
+              <p className="text-[10px] sm:text-xs text-dark/80 leading-[14px] sm:leading-4 tracking-[0.25px]">
+                Our thoroughly vetted experts ensure your home is safe and spotless.
+              </p>
+            </div>
           </div>
+
+        </div>
+
+        {/* Stats (mobile / tablet) */}
+        <div className="lg:hidden w-full bg-white relative z-10">
+          <StatsSection />
+        </div>
+
+        {/* Buttons (mobile / tablet) */}
+        <div className="lg:hidden flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 w-full max-w-[400px] sm:max-w-none mx-auto px-4 sm:px-6 md:px-10 pt-6 pb-10 bg-white relative z-10">
+          <SplitButton
+            label="Browse Maid Profiles"
+            href="/search"
+            icon={<UserRound className="w-5 h-5" strokeWidth={1.8} />}
+            className="w-full sm:w-auto"
+          />
+          <SplitButton
+            label="Select a Package"
+            href="/pricing"
+            icon={<Package className="w-5 h-5" strokeWidth={1.8} />}
+            className="w-full sm:w-auto"
+          />
         </div>
 
         {/* ── Desktop layout ── */}
@@ -109,7 +171,6 @@ export function HeroSection() {
               <h1 className="text-[length:clamp(2.15rem,3.6vw_-_0.65rem,4.25rem)] font-semibold leading-tight tracking-[-0.02em] text-dark">
                 Maids In Dubai - Hire Verified <br />
                 <span className="text-primary">Maids & Nannies</span> in UAE
-                Quickly
               </h1>
               <p className="text-[20px] text-dark/80 leading-[30px] tracking-[0.25px] max-w-[560px]">
                 Find verified live-out maids, full-time maids, nannies, and caregivers across the UAE, including Dubai, Abu Dhabi, Sharjah, and all emirates.
@@ -121,6 +182,20 @@ export function HeroSection() {
 
             {/* Stats */}
             <StatsSection />
+
+            {/* Buttons */}
+            <div className="flex items-center gap-4">
+              <SplitButton
+                label="Browse Maid Profiles"
+                href="/search"
+                icon={<UserRound className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
+              />
+              <SplitButton
+                label="Select a Package"
+                href="/pricing"
+                icon={<Package className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
+              />
+            </div>
           </div>
 
           {/* Right column: decorative circles + image + floating cards */}

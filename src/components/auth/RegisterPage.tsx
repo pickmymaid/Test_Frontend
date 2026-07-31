@@ -57,6 +57,7 @@ interface FormData {
   name: string;
   email: string;
   password: string;
+  confirm_password: string;
   country_code: string;
   mobile: string;
   emirate_of_residence: string;
@@ -78,11 +79,13 @@ export function RegisterPage() {
   const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/search";
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     defaultValues: { country_code: "+971" },
@@ -185,7 +188,7 @@ export function RegisterPage() {
                 <input
                   id="name"
                   type="text"
-                  placeholder="Sarah Al Mansouri"
+                  placeholder="Enter your name"
                   autoComplete="name"
                   {...register("name", {
                     required: "Full name is required",
@@ -212,7 +215,7 @@ export function RegisterPage() {
                 <input
                   id="email"
                   type="email"
-                  placeholder="sarah@example.com"
+                  placeholder="Enter your email address"
                   autoComplete="email"
                   {...register("email", {
                     required: "Email is required",
@@ -272,6 +275,47 @@ export function RegisterPage() {
               )}
             </div>
 
+            {/* Confirm Password */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="confirm_password"
+                className="text-sm font-medium text-dark"
+              >
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  id="confirm_password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Re-enter your password"
+                  autoComplete="new-password"
+                  {...register("confirm_password", {
+                    required: "Please confirm your password",
+                    validate: (value) =>
+                      value === watch("password") || "Passwords do not match",
+                  })}
+                  className={`${inputCls(!!errors.confirm_password)} pr-11`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-dark transition-colors"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-4 h-4" strokeWidth={1.75} />
+                  ) : (
+                    <Eye className="w-4 h-4" strokeWidth={1.75} />
+                  )}
+                </button>
+              </div>
+              {errors.confirm_password && (
+                <p className="text-xs text-red-500">
+                  {errors.confirm_password.message}
+                </p>
+              )}
+            </div>
+
             {/* Mobile */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="mobile" className="text-sm font-medium text-dark">
@@ -306,7 +350,7 @@ export function RegisterPage() {
                 <input
                   id="mobile"
                   type="tel"
-                  placeholder="50 123 4567"
+                  placeholder="Enter your mobile number"
                   autoComplete="tel-national"
                   {...register("mobile", {
                     required: "Mobile number is required",
@@ -365,7 +409,7 @@ export function RegisterPage() {
                   htmlFor="position_required"
                   className="text-sm font-medium text-dark"
                 >
-                  Position Required
+                  What Are You Looking For
                 </label>
                 <div className="relative">
                   <select
@@ -375,7 +419,7 @@ export function RegisterPage() {
                     })}
                     className={`${inputCls(!!errors.position_required)} appearance-none pr-10 cursor-pointer`}
                   >
-                    <option value="">Select a position</option>
+                    <option value="">Looking for</option>
                     {POSITIONS.map((p) => (
                       <option key={p} value={p}>
                         {p}
