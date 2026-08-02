@@ -6,7 +6,20 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { lockScroll, unlockScroll } from "@/lib/scrollLock";
-import { Menu, X, ChevronDown, Heart, LogOut } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Heart,
+  LogOut,
+  Home,
+  Search,
+  Package,
+  Compass,
+  Info,
+  Phone,
+  Newspaper,
+} from "lucide-react";
 import { toast } from "sonner";
 import { SplitButton } from "../ui/SplitButton";
 import { OutlineButton } from "../ui/OutlineButton";
@@ -16,14 +29,14 @@ import { verifyAuth, logoutUser, getPaymentDetails } from "@/lib/api";
 const ASSET_BASE = "https://assets.pickmymaid.com";
 
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Search Maid/Nanny", href: "/search" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "How It Works", href: "/how-it-works" },
-  { label: "About Us", href: "/about-us" },
-  { label: "Favorites", href: "/favorites" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "Blogs", href: "/blog" },
+  { label: "Home", href: "/", icon: Home },
+  { label: "Search Maid/Nanny", href: "/search", icon: Search },
+  { label: "Packages", href: "/packages", icon: Package },
+  { label: "How It Works", href: "/how-it-works", icon: Compass },
+  { label: "About Us", href: "/about-us", icon: Info },
+  { label: "Favorites", href: "/favorites", icon: Heart },
+  { label: "Contact Us", href: "/contact", icon: Phone },
+  { label: "Blogs", href: "/blog", icon: Newspaper },
 ];
 
 const drawerVariants: Variants = {
@@ -452,8 +465,9 @@ export function Navbar() {
                     variants={navItemVariants}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center text-base font-medium text-dark hover:text-primary hover:bg-primary-50 px-4 py-3 rounded-xl transition-all duration-200"
+                    className="flex items-center gap-3 text-lg font-medium text-dark hover:text-primary hover:bg-primary-50 px-4 py-3 rounded-xl transition-all duration-200"
                   >
+                    <link.icon className="w-6 h-6 text-muted shrink-0" strokeWidth={1.75} />
                     {link.label}
                   </motion.a>
                 ) : (
@@ -461,8 +475,9 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="flex items-center text-base font-medium text-dark hover:text-primary hover:bg-primary-50 px-4 py-3 rounded-xl transition-all duration-200"
+                      className="flex items-center gap-3 text-lg font-medium text-dark hover:text-primary hover:bg-primary-50 px-4 py-3 rounded-xl transition-all duration-200"
                     >
+                      <link.icon className="w-6 h-6 text-muted shrink-0" strokeWidth={1.75} />
                       {link.label}
                     </Link>
                   </motion.div>

@@ -4,9 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/Whatsapp";
 
-const WA_LINK =
-  "https://wa.me/971566369736?text=Hi%2C%20I%27m%20interested%20in%20hiring%20a%20maid%2Fnanny.";
-const CALL_LINK = "tel:+971566369736";
+const PHONE_NUMBER = "971566369736";
+const WA_LINK = `https://wa.me/${PHONE_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20hiring%20a%20maid%2Fnanny.`;
+const CALL_LINK = `tel:+${PHONE_NUMBER}`;
 
 export function WhatsAppFloatingButton() {
   const [visible, setVisible] = useState(true);
@@ -60,7 +60,7 @@ export function WhatsAppFloatingButton() {
 
   return (
     <div
-      className={`fixed bottom-6 right-5 z-40 flex flex-col items-end gap-3 pointer-events-none transition-[opacity,transform] duration-300 ease-in-out ${
+      className={`fixed bottom-6 right-5 z-40 flex flex-col items-end gap-9 pointer-events-none transition-[opacity,transform] duration-300 ease-in-out ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
@@ -88,6 +88,22 @@ export function WhatsAppFloatingButton() {
         aria-label="call-button"
         className="relative pointer-events-auto"
       >
+        {/* Pulse rings */}
+        <span
+          className="absolute inset-0 rounded-full bg-primary"
+          style={{
+            willChange: "transform, opacity",
+            animation: "wa-pulse 2.2s ease-out infinite",
+          }}
+        />
+        <span
+          className="absolute inset-0 rounded-full bg-primary"
+          style={{
+            willChange: "transform, opacity",
+            animation: "wa-pulse 2.2s ease-out 0.8s infinite",
+          }}
+        />
+
         <a
           href={CALL_LINK}
           aria-label="Call us"

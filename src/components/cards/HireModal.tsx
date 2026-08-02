@@ -26,13 +26,13 @@ export function HireModal({ profile, state, onClose }: HireModalProps) {
   function goToRegister() {
     savePendingHire(profile.id, profile.name);
     onClose();
-    router.push("/register?returnTo=/pricing");
+    router.push("/register?returnTo=/packages");
   }
 
-  function goToPricing() {
+  function goToPackages() {
     savePendingHire(profile.id, profile.name);
     onClose();
-    router.push("/pricing");
+    router.push("/packages");
   }
 
   return createPortal(
@@ -143,7 +143,7 @@ export function HireModal({ profile, state, onClose }: HireModalProps) {
                 ))}
               </div>
 
-              <SplitButton label="View Plans" onClick={goToPricing} className="w-full" />
+              <SplitButton label="View Plans" onClick={goToPackages} className="w-full" />
             </>
           )}
         </div>

@@ -128,7 +128,7 @@ export function SubscriptionPlansSection() {
 
   return (
     <section
-      id="pricing"
+      id="packages"
       className="py-12 lg:py-20 relative overflow-hidden scroll-mt-20 lg:scroll-mt-24"
    
       aria-label="Subscription Plans"
@@ -174,7 +174,7 @@ export function SubscriptionPlansSection() {
 
         <div className="flex justify-center mt-10 lg:mt-12">
           <Link
-            href="/pricing"
+            href="/packages"
             className="text-sm font-semibold text-primary hover:underline"
           >
             View full package details &amp; FAQs

@@ -1,4 +1,4 @@
-import { Sparkles, Baby, Clock, HeartHandshake, Check } from "lucide-react";
+import { BrushCleaning, ToyBrick, CalendarClock, HandHeart, Check } from "lucide-react";
 import { SectionHeader } from "../ui/SectionHeader";
 import type { LucideIcon } from "lucide-react";
 
@@ -9,7 +9,7 @@ const services: {
   items: string[];
 }[] = [
   {
-    icon: Sparkles,
+    icon: BrushCleaning,
     title: "Hire a Maid in UAE",
     intro: "Verified full time maids in UAE available for:",
     items: [
@@ -21,7 +21,7 @@ const services: {
     ],
   },
   {
-    icon: Baby,
+    icon: ToyBrick,
     title: "Hire a Nanny in UAE",
     intro: "Experienced nannies for:",
     items: [
@@ -32,7 +32,7 @@ const services: {
     ],
   },
   {
-    icon: Clock,
+    icon: CalendarClock,
     title: "Babysitters",
     intro: "Flexible part-time babysitters available for:",
     items: [
@@ -43,7 +43,7 @@ const services: {
     ],
   },
   {
-    icon: HeartHandshake,
+    icon: HandHeart,
     title: "Elderly Caregivers",
     intro: "Compassionate caregivers available for:",
     items: [

@@ -228,9 +228,9 @@ function FaqItem({
   );
 }
 
-/* ─── PricingPage ────────────────────────────────────────────── */
+/* ─── PackagesPage ───────────────────────────────────────────── */
 
-export function PricingPage() {
+export function PackagesPage() {
   const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { isSubscribed, tier } = useSubscription();
@@ -267,10 +267,10 @@ export function PricingPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-full">
       {/* ── 1. Hero ─────────────────────────────────────────── */}
       <section className="bg-white pt-28 lg:pt-24">
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
+        <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-16">
           {/* Text block */}
           <div className="flex flex-col items-center text-center pb-12 lg:pb-16">
             <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary/20 text-primary text-xs font-semibold px-4 py-1.5 rounded-full tracking-[0.5px] mb-6">
@@ -279,7 +279,7 @@ export function PricingPage() {
             </div>
             <h1 className="text-[36px] lg:text-[60px] font-bold text-dark leading-tight lg:leading-17 tracking-[-1.5px] max-w-3xl">
               Hire a Nanny or Maid in UAE-With{" "}
-              <span className="text-primary">Flexible Pricing Options</span>
+              <span className="text-primary">Flexible Packages</span>
             </h1>
             <p className="mt-5 text-base lg:text-xl text-dark/60 leading-relaxed max-w-xl">
               Access 5k+ verified profiles directly. No agency middlemen, no
@@ -334,14 +334,14 @@ export function PricingPage() {
 
       {/* ── 2. Pricing cards ────────────────────────────────── */}
       <section id="plans" className="bg-white py-14 lg:py-20">
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
+        <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
           {/* Section header */}
-          <div className="max-w-5xl mx-auto mb-10 lg:mb-14">
+          <div className="max-w-[1600px] mx-auto mb-10 lg:mb-14">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
               {/* Left: heading + description */}
               <div className="flex flex-col gap-3">
                 <h2 className="text-3xl lg:text-5xl font-bold text-dark tracking-[-1px]">
-                  Subscription plans
+                  Our <span className="text-primary">Packages</span>
                 </h2>
                 <p className="text-sm lg:text-base text-muted max-w-md leading-relaxed">
                   Choose how long you need access. All plans include direct
@@ -376,7 +376,7 @@ export function PricingPage() {
             </div>
           </div>
 
-          <div className="bg-[#F5F5F5] rounded-3xl p-4 lg:p-6 max-w-5xl mx-auto">
+          <div className="bg-[#F5F5F5] rounded-3xl p-4 lg:p-6 max-w-[1600px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 lg:items-start">
               {PLANS.map((plan) => {
                 const isActivePlan = isSubscribed && tier === plan.id;
@@ -491,9 +491,9 @@ export function PricingPage() {
       </section>
 
       {/* ── 3. FAQ ──────────────────────────────────────────── */}
-      <section className="bg-white py-14 lg:py-20">
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
-          <div className="max-w-3xl mx-auto">
+      <section className="bg-white py-14 lg:py-16">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-2">
+          <div className="max-w-[1600px] mx-auto">
             <h2 className="text-2xl lg:text-4xl font-bold text-dark tracking-[-0.5px] mb-2">
               Common questions about our plans
             </h2>
@@ -517,8 +517,8 @@ export function PricingPage() {
 
       {/* ── 4. Matching quiz ────────────────────────────────── */}
       <section className="bg-[#F5F5F5] py-14 lg:py-20">
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
-          <div className="max-w-3xl mx-auto">
+        <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
+          <div className="max-w-[1600px] mx-auto">
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-2xl lg:text-4xl font-bold text-dark tracking-[-0.5px]">
@@ -648,8 +648,8 @@ export function PricingPage() {
 
       {/* ── 5. CTA ──────────────────────────────────────────── */}
       <section className="bg-[#F5F5F5] py-14 lg:py-20">
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
-          <div className="bg-white rounded-3xl px-8 py-14 lg:px-16 lg:py-20 text-center max-w-3xl mx-auto shadow-[0px_19px_40px_0px_rgba(0,0,0,0.05)]">
+        <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-16">
+          <div className="bg-white rounded-3xl px-8 py-14 lg:px-16 lg:py-20 text-center max-w-[1600px] mx-auto shadow-[0px_19px_40px_0px_rgba(0,0,0,0.05)]">
             <div className="w-12 h-1.5 bg-primary rounded-full mx-auto mb-8" />
             <h2 className="text-3xl lg:text-5xl font-bold text-dark leading-tight tracking-[-1px]">
               Ready to Find Your Perfect{" "}

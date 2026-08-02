@@ -1,13 +1,55 @@
 
 // second
 import Image from "next/image";
-import { Star } from "lucide-react";
+import Link from "next/link";
+import { Search, Star } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 import { StatsSection } from "./StatsSection";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { GoogleGIcon } from "../icons/GoogleG";
-import { Package, UserRound } from "lucide-react";
-import { SplitButton } from "../ui/SplitButton";
+import { PackageCardIcon } from "../icons/PackageCardIcon";
+
+function HeroCtaButton({
+  href,
+  icon,
+  label,
+  variant = "outline",
+  className = "",
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  variant?: "outline" | "filled";
+  className?: string;
+}) {
+  const isFilled = variant === "filled";
+
+  return (
+    <Link
+      href={href}
+      className={`flex items-center justify-center gap-2.5 sm:gap-3 rounded-full px-6 py-3.5 sm:px-8 sm:py-4 transition-colors duration-200 ${
+        isFilled
+          ? "bg-primary hover:bg-primary-600"
+          : "bg-white border-2 border-primary hover:bg-primary-50"
+      } ${className}`}
+    >
+      <span
+        className={`shrink-0 flex items-center justify-center ${
+          isFilled ? "text-white bg-white/20 rounded-full p-1.5" : "text-primary"
+        }`}
+      >
+        {icon}
+      </span>
+      <span
+        className={`text-base sm:text-lg font-semibold whitespace-nowrap ${
+          isFilled ? "text-white" : "text-primary"
+        }`}
+      >
+        {label}
+      </span>
+    </Link>
+  );
+}
 
 export function HeroSection() {
   return (
@@ -143,18 +185,18 @@ export function HeroSection() {
         </div>
 
         {/* Buttons (mobile / tablet) */}
-        <div className="lg:hidden flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 w-full max-w-[400px] sm:max-w-none mx-auto px-4 sm:px-6 md:px-10 pt-6 pb-10 bg-white relative z-10">
-          <SplitButton
+        <div className="lg:hidden flex flex-col gap-3 sm:gap-4 w-full max-w-[400px] sm:max-w-none mx-auto px-4 sm:px-6 md:px-10 pt-6 pb-10 bg-white relative z-10">
+          <HeroCtaButton
             label="Browse Maid Profiles"
             href="/search"
-            icon={<UserRound className="w-5 h-5" strokeWidth={1.8} />}
-            className="w-full sm:w-auto"
+            variant="outline"
+            icon={<Search className="w-5 h-5" strokeWidth={1.8} />}
           />
-          <SplitButton
+          <HeroCtaButton
             label="Select a Package"
-            href="/pricing"
-            icon={<Package className="w-5 h-5" strokeWidth={1.8} />}
-            className="w-full sm:w-auto"
+            href="/packages"
+            variant="filled"
+            icon={<PackageCardIcon className="w-5 h-5" strokeWidth={1.8} />}
           />
         </div>
 
@@ -184,16 +226,18 @@ export function HeroSection() {
             <StatsSection />
 
             {/* Buttons */}
-            <div className="flex items-center gap-4">
-              <SplitButton
+            <div className="flex flex-row gap-4">
+              <HeroCtaButton
                 label="Browse Maid Profiles"
                 href="/search"
-                icon={<UserRound className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
+                variant="outline"
+                icon={<Search className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
               />
-              <SplitButton
+              <HeroCtaButton
                 label="Select a Package"
-                href="/pricing"
-                icon={<Package className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
+                href="/packages"
+                variant="filled"
+                icon={<PackageCardIcon className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
               />
             </div>
           </div>

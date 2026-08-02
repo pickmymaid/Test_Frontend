@@ -157,7 +157,7 @@ function NavColumn({
       className={`flex flex-col gap-4 ${centered ? "items-center" : "items-start"}`}
     >
       <p
-        className={`text-white font-medium text-xl lg:text-lg ${centered ? "text-center" : ""}`}
+        className={`text-white font-medium text-base lg:text-lg ${centered ? "text-center" : ""}`}
       >
         {heading}
       </p>
@@ -168,7 +168,7 @@ function NavColumn({
           <li key={link.href}>
             <Link
               href={link.href}
-              className={`text-white/80 text-xl lg:text-base py-1 block hover:text-white transition-colors ${centered ? "text-center" : ""}`}
+              className={`text-white/80 text-sm lg:text-base py-1 block hover:text-white transition-colors ${centered ? "text-center" : ""}`}
             >
               {link.label}
             </Link>
@@ -195,20 +195,20 @@ export function Footer() {
               className="brightness-0 invert h-auto"
               priority
             />
-            <p className="text-xl text-white/80 leading-8">
+            <p className="text-sm text-white/80 leading-6">
               Pickmymaid is the UAE&apos;s No 1 platform for finding trusted maids and nannies across Dubai, Abu Dhabi, Sharjah, and beyond. Browse detailed profiles with real recommendations, connect directly with helpers, and make confident hiring decisions — all without paying a single dirham in agency fees. No middlemen, no inflated costs, just the right person for your home.
             </p>
             <div className="flex flex-col gap-3 items-start">
               {contactInfo.map(({ icon: Icon, label, href }) =>
                 href ? (
                   <a key={label} href={href} className="flex items-start gap-2 text-white/80 hover:text-white transition-colors">
-                    <Icon className="w-6 h-6 shrink-0 mt-0.5" strokeWidth={1.75} />
-                    <span className="text-xl">{label}</span>
+                    <Icon className="w-5 h-5 shrink-0 mt-0.5" strokeWidth={1.75} />
+                    <span className="text-sm">{label}</span>
                   </a>
                 ) : (
                   <div key={label} className="flex items-start gap-2 text-white/80">
-                    <Icon className="w-6 h-6 shrink-0 mt-0.5" strokeWidth={1.75} />
-                    <span className="text-xl">{label}</span>
+                    <Icon className="w-5 h-5 shrink-0 mt-0.5" strokeWidth={1.75} />
+                    <span className="text-sm">{label}</span>
                   </div>
                 )
               )}
@@ -224,7 +224,7 @@ export function Footer() {
 
           {/* Bottom: copyright → social → legal */}
           <div className="flex flex-col gap-8 items-start">
-            <p className="text-white text-xl text-left">
+            <p className="text-white text-sm text-left">
               © 2026 Pick My Maid. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
@@ -244,7 +244,7 @@ export function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-white text-xl hover:text-white/70 transition-colors"
+                  className="text-white text-sm hover:text-white/70 transition-colors"
                 >
                   {link.label}
                 </Link>

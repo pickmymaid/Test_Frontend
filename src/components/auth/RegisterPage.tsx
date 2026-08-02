@@ -419,7 +419,7 @@ export function RegisterPage() {
                     })}
                     className={`${inputCls(!!errors.position_required)} appearance-none pr-10 cursor-pointer`}
                   >
-                    <option value="">Looking for</option>
+                    <option value="">Select Service</option>
                     {POSITIONS.map((p) => (
                       <option key={p} value={p}>
                         {p}

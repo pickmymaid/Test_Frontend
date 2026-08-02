@@ -60,9 +60,9 @@ function LockedContactCard({
       JSON.stringify({ id: maidRefNumber, name: maidName }),
     );
     if (!isAuthenticated) {
-      router.push(`/register?returnTo=/pricing`);
+      router.push(`/register?returnTo=/packages`);
     } else {
-      router.push("/pricing");
+      router.push("/packages");
     }
   }
 

@@ -6,7 +6,7 @@ const BASE = "https://www.pickmymaid.com";
 const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: BASE, priority: 1.0, changeFrequency: "daily" },
   { url: `${BASE}/search`, priority: 0.9, changeFrequency: "daily" },
-  { url: `${BASE}/pricing`, priority: 0.8, changeFrequency: "weekly" },
+  { url: `${BASE}/packages`, priority: 0.8, changeFrequency: "weekly" },
   { url: `${BASE}/about-us`, priority: 0.7, changeFrequency: "monthly" },
   { url: `${BASE}/how-it-works`, priority: 0.7, changeFrequency: "monthly" },
   { url: `${BASE}/contact`, priority: 0.6, changeFrequency: "monthly" },
