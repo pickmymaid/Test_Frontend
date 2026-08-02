@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Check, X, Loader2, ArrowRight, Plus, Minus } from "lucide-react";
+import { Check, ArrowRight, Plus, Minus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuthStore, useSubscription } from "@/store/auth";
 import { createPayment } from "@/lib/api";
 import { PLANS } from "@/config/plans.config";
+import { PlanCard } from "../cards/PlanCard";
 
 /* ─── FAQ data ───────────────────────────────────────────────── */
 
@@ -378,113 +379,16 @@ export function PackagesPage() {
 
           <div className="bg-[#F5F5F5] rounded-3xl p-4 lg:p-6 max-w-[1600px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 lg:items-start">
-              {PLANS.map((plan) => {
-                const isActivePlan = isSubscribed && tier === plan.id;
-                return (
-                  <div
-                    key={plan.id}
-                    className={`bg-white rounded-3xl p-6 lg:p-8 flex flex-col gap-6 relative ${
-                      isActivePlan
-                        ? "ring-2 ring-[#6DA544] shadow-[0px_24px_48px_0px_rgba(109,165,68,0.12)]"
-                        : plan.isBestChoice
-                          ? "ring-2 ring-primary shadow-[0px_24px_48px_0px_rgba(255,116,66,0.12)]"
-                          : "shadow-[0px_19px_40px_0px_rgba(0,0,0,0.05)]"
-                    }`}
-                  >
-                    {isActivePlan && (
-                      <div className="absolute top-6 right-6 lg:top-8 lg:right-8">
-                        <div className="flex items-center gap-1 border border-[#6DA544]/30 bg-[#6DA544]/10 rounded-full px-3 py-1 shadow-[inset_1px_1px_2px_0px_rgba(0,0,0,0.06)]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#6DA544] shrink-0" />
-                          <span className="text-[10px] font-bold text-[#6DA544] tracking-[0.75px] uppercase whitespace-nowrap">
-                            Active Plan
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                    {!isActivePlan && plan.isBestChoice && (
-                      <div className="absolute top-6 right-6 lg:top-8 lg:right-8">
-                        <div className="flex items-center gap-1 border border-primary/30 bg-primary-50 rounded-full px-3 py-1 shadow-[inset_1px_1px_2px_0px_rgba(0,0,0,0.06)]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                          <span className="text-[10px] font-bold text-primary tracking-[0.75px] uppercase whitespace-nowrap">
-                            Best Choice
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                    <div className={plan.isBestChoice ? "pr-24 lg:pr-28" : ""}>
-                      <p className="text-sm font-medium text-muted tracking-[0.5px] mb-4">
-                        {plan.name}
-                      </p>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-sm font-semibold text-dark/50 tracking-[0.5px] self-start mt-2">
-                          AED
-                        </span>
-                        <span className="text-[44px] lg:text-[52px] font-bold text-dark leading-none tracking-[-2px]">
-                          {plan.price}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted mt-2 tracking-[0.25px]">
-                        {plan.duration}
-                      </p>
-                    </div>
-                    <p className="text-sm text-dark/70 leading-5.5 tracking-[0.25px] pb-1">
-                      {plan.description}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        !isActivePlan &&
-                        handleGetStarted(plan.type as 0 | 1 | 2)
-                      }
-                      disabled={isActivePlan || loadingType !== null}
-                      className={`w-full py-3.5 rounded-2xl text-sm font-semibold text-center transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed ${
-                        isActivePlan
-                          ? "bg-[#6DA544]/10 text-[#6DA544] border border-[#6DA544]/30"
-                          : plan.isBestChoice
-                            ? "bg-primary text-white hover:bg-primary-600 disabled:opacity-70"
-                            : "border border-primary/40 text-primary hover:bg-primary-50 hover:border-primary disabled:opacity-70"
-                      }`}
-                    >
-                      {isActivePlan ? (
-                        "Current Plan"
-                      ) : loadingType === plan.type ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Processing…
-                        </>
-                      ) : (
-                        "Get Started"
-                      )}
-                    </button>
-                    <div className="h-px bg-gray-100" />
-                    <div className="flex flex-col gap-3">
-                      <p className="text-xs font-semibold text-dark tracking-[0.75px] uppercase">
-                        All the benefits:
-                      </p>
-                      <ul className="flex flex-col gap-3.5">
-                        {plan.benefits.map((benefit, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <span
-                              className={`mt-0.5 shrink-0 ${benefit.included ? "text-[#6DA544]" : "text-red-400"}`}
-                            >
-                              {benefit.included ? (
-                                <Check className="w-4 h-4" strokeWidth={2.5} />
-                              ) : (
-                                <X className="w-4 h-4" strokeWidth={2.5} />
-                              )}
-                            </span>
-                            <span
-                              className={`text-sm leading-5 tracking-[0.25px] ${benefit.included ? "text-dark/80" : "text-muted line-through"}`}
-                            >
-                              {benefit.text}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                );
-              })}
+              {PLANS.map((plan) => (
+                <PlanCard
+                  key={plan.id}
+                  plan={plan}
+                  isActivePlan={isSubscribed && tier === plan.id}
+                  loadingType={loadingType}
+                  onGetStarted={handleGetStarted}
+                  ctaLabel="Buy Package"
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -492,7 +396,7 @@ export function PackagesPage() {
 
       {/* ── 3. FAQ ──────────────────────────────────────────── */}
       <section className="bg-white py-14 lg:py-16">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-2">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-11">
           <div className="max-w-[1600px] mx-auto">
             <h2 className="text-2xl lg:text-4xl font-bold text-dark tracking-[-0.5px] mb-2">
               Common questions about our plans

@@ -158,7 +158,7 @@ export function HeroSection() {
                   People Hired
                 </p>
                 <p className="text-[12px] sm:text-[13px] font-semibold text-dark leading-[18px] tracking-[0.5px]">
-                  This Week
+                  This Month
                 </p>
               </div>
             </div>
@@ -325,7 +325,7 @@ export function HeroSection() {
                       People Hired
                     </p>
                     <p className="text-[11px] lg:text-xs xl:text-base font-semibold text-dark leading-4 xl:leading-6 tracking-[0.25px]">
-                      This Week
+                      This Month
                     </p>
                   </div>
                 </div>

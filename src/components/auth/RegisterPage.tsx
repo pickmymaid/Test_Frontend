@@ -15,6 +15,7 @@ import { SplitButton } from "@/components/ui/SplitButton";
 
 const EMIRATES = [
   "Abu Dhabi",
+  "Al Ain",
   "Dubai",
   "Sharjah",
   "Ajman",

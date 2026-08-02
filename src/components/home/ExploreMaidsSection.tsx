@@ -23,6 +23,7 @@ const PILLS: ExplorePill[] = [
   { label: "Cooking Maid Dubai", variant: "solid", params: { service: "Cook", location: "Dubai" } },
   { label: "Maid Agency Dubai", variant: "solid", params: { q: "Maid agency", location: "Dubai" } },
   { label: "Maid Abu Dhabi", variant: "solid", params: { service: "Maid", location: "Abu Dhabi" } },
+  { label: "Maids in Abu Dhabi", variant: "solid", params: { service: "Maid", location: "Abu Dhabi" } },
   { label: "Filipino Maids Dubai", variant: "outline", params: { nationality: "Philippines", service: "Maid", location: "Dubai" } },
   { label: "Indian Maids Dubai", variant: "outline", params: { nationality: "India", service: "Maid", location: "Dubai" } },
   { label: "Sri Lankan Maids Dubai", variant: "outline", params: { nationality: "Sri Lanka", service: "Maid", location: "Dubai" } },
