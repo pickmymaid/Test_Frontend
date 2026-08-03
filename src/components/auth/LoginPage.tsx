@@ -73,7 +73,7 @@ export function LoginPage() {
 
   const rawReturn = searchParams.get("returnTo") ?? "";
   // Sanitise: only allow relative paths to prevent open redirect
-  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/#packages";
+  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/packages#plans";
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -86,10 +86,10 @@ export function LoginPage() {
 
   /* ── OAuth handlers ── */
   function handleGoogle() {
-    window.location.href = GOOGLE_URL;
+    window.location.href = `${GOOGLE_URL}?redirect=${encodeURIComponent(returnTo)}`;
   }
   function handleApple() {
-    window.location.href = APPLE_URL;
+    window.location.href = `${APPLE_URL}?redirect=${encodeURIComponent(returnTo)}`;
   }
 
   /* ── Email submit ── */

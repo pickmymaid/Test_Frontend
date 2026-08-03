@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Check, ArrowRight, Plus, Minus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Check, CheckCircle2, ArrowRight, Plus, Minus } from "lucide-react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useAuthStore, useSubscription } from "@/store/auth";
 import { createPayment } from "@/lib/api";
@@ -233,11 +233,22 @@ function FaqItem({
 
 export function PackagesPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { isSubscribed, tier } = useSubscription();
   const [loadingType, setLoadingType] = useState<0 | 1 | 2 | null>(null);
   const [faqOpen, setFaqOpen] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
+  const [showRegisteredBanner, setShowRegisteredBanner] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("registered") === "1") {
+      setShowRegisteredBanner(true);
+      router.replace(`${pathname}#plans`, { scroll: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleGetStarted(type: 0 | 1 | 2) {
     if (!isAuthenticated) {
@@ -338,6 +349,19 @@ export function PackagesPage() {
         <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
           {/* Section header */}
           <div className="max-w-[1600px] mx-auto mb-10 lg:mb-14">
+            {showRegisteredBanner && (
+              <div className="flex items-start gap-3 bg-primary-50 border border-primary/20 rounded-2xl px-5 py-4 mb-8">
+                <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" strokeWidth={2} />
+                <div>
+                  <p className="text-sm font-semibold text-dark">
+                    Successfully created your account
+                  </p>
+                  <p className="text-xs text-muted mt-0.5">
+                    Browse our packages to access our maids details.
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
               {/* Left: heading + description */}
               <div className="flex flex-col gap-3">

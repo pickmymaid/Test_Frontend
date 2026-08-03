@@ -136,7 +136,7 @@ return (
               Available Maids & Nannies in UAE
             </h2>
 
-            <p className="mt-4 text-lg text-[#6B6B6B] hidden lg:block">
+            <p className="mt-4 text-sm lg:text-lg text-[#6B6B6B]">
               Updated on {todayLabel}
             </p>
 
@@ -144,10 +144,6 @@ return (
 
           {/* Right */}
           <div className="flex flex-col items-end gap-3 lg:flex-row lg:flex-wrap lg:items-center lg:justify-normal lg:gap-4">
-
-            <p className="text-sm text-[#6B6B6B] lg:hidden">
-              Updated on {todayLabel}
-            </p>
 
             <Link
               href="/search"

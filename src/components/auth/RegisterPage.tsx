@@ -256,7 +256,7 @@ export function RegisterPage() {
   }, []);
 
   const rawReturn = searchParams.get("returnTo") ?? "";
-  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/search";
+  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/packages";
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -294,7 +294,8 @@ export function RegisterPage() {
         isSubscribed: false,
       });
       toast.success("Account created! Welcome to Pickmymaid.");
-      router.push(returnTo);
+      const separator = returnTo.includes("?") ? "&" : "?";
+      router.push(`${returnTo}${separator}registered=1#plans`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "";
       if (/exist|already|duplicate|registered/i.test(msg)) {
