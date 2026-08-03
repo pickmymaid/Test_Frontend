@@ -37,7 +37,7 @@ export function InterviewCategoryCard({
         </div>
       </div>
 
-      {/* ── Questions ──────────────────────────────────────────── */}
+  
       <div className="bg-white px-5 lg:px-8 py-6 lg:py-7">
         <ol className="flex flex-col gap-3">
           {visible.map((q, i) => (
