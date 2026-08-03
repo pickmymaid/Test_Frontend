@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   async redirects() {
@@ -22,5 +23,7 @@ const nextConfig: NextConfig = {
     qualities: [75, 90],
   },
 };
+
+initOpenNextCloudflareForDev();
 
 export default nextConfig;
