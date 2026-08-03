@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
   },
 };
 
+// Gives local `next dev` access to Cloudflare bindings (KV, etc.) via
+// `getCloudflareContext()`. No-op when actually running on Workers.
 initOpenNextCloudflareForDev();
 
 export default nextConfig;

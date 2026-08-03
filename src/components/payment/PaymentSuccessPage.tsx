@@ -29,7 +29,6 @@ function formatDate(dateStr: string): string {
 export function PaymentSuccessPage() {
   const searchParams = useSearchParams();
   const setAuth = useAuthStore((s) => s.setAuth);
-  const user = useAuthStore((s) => s.user);
 
   const typeIndex = parseInt(searchParams.get("type") ?? "-1", 10);
   const expiryParam = searchParams.get("expiry") ?? "";
@@ -39,9 +38,13 @@ export function PaymentSuccessPage() {
   const planInfo = tierKey ? PLAN_INFO[tierKey] : null;
 
   useEffect(() => {
-    const currentUser = user;
     getPaymentDetails()
       .then((res) => {
+        // Read the store fresh here instead of a `user` selector captured at
+        // mount — Zustand's persisted `user` may still be null on first
+        // render (localStorage rehydration hasn't landed yet), and this
+        // effect never re-runs to pick up the later value.
+        const currentUser = useAuthStore.getState().user;
         if (res.data?.user?.status === 1 && currentUser) {
           const tier = TIER_MAP[res.data.user.type];
           setAuth({ ...currentUser, isSubscribed: true, subscriptionTier: tier });

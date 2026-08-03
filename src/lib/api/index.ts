@@ -2,6 +2,15 @@ import type { FeaturedJob, ApiMaid, ApiBlog, ApiBlogDetail } from '@/types'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.pickmymaid.com/api'
 
+export class ApiError extends Error {
+  status: number
+  constructor(message: string, status: number) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+  }
+}
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const { headers: extra, ...rest } = options ?? {}
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -15,7 +24,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
       const body = await res.json()
       if (body?.message) message = body.message
     } catch { /* ignore parse errors */ }
-    throw new Error(message)
+    throw new ApiError(message, res.status)
   }
   return res.json()
 }

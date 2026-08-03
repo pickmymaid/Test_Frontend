@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Lock } from "lucide-react";
+import { useState, useEffect, useReducer } from "react";
+import { Lock, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ContactInfoCard } from "./ContactInfoCard";
 import { SplitButton } from "@/components/ui/SplitButton";
@@ -93,6 +93,48 @@ function ContactSkeleton() {
   return <div className="rounded-3xl h-[220px] bg-gray-200 animate-pulse" />;
 }
 
+function ContactErrorCard({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="h-full relative rounded-3xl overflow-hidden">
+      <div className="h-full blur-sm">{<BlurredPlaceholder />}</div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 bg-black/20 backdrop-blur-[3px] rounded-3xl">
+        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+          <AlertTriangle className="w-6 h-6 text-white" />
+        </div>
+        <p className="text-white text-sm font-medium text-center leading-snug">
+          Couldn&apos;t load contact details. Please try again.
+        </p>
+        <SplitButton label="Retry" variant="secondary" onClick={onRetry} />
+      </div>
+    </div>
+  );
+}
+
+type ContactState =
+  | { status: "loading" }
+  | { status: "error" }
+  | { status: "locked" }
+  | { status: "success"; contacts: ContactData };
+
+type ContactAction =
+  | { type: "start" }
+  | { type: "error" }
+  | { type: "locked" }
+  | { type: "success"; contacts: ContactData };
+
+function contactReducer(_state: ContactState, action: ContactAction): ContactState {
+  switch (action.type) {
+    case "start":
+      return { status: "loading" };
+    case "error":
+      return { status: "error" };
+    case "locked":
+      return { status: "locked" };
+    case "success":
+      return { status: "success", contacts: action.contacts };
+  }
+}
+
 export function ContactSection({
   id,
   maidRefNumber,
@@ -102,40 +144,54 @@ export function ContactSection({
   maidRefNumber: string;
   maidName: string;
 }) {
-  const [contacts, setContacts] = useState<ContactData | null>(null);
-  const [locked, setLocked] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useReducer(contactReducer, { status: "loading" });
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
+
     fetch(`${API_BASE}/v1/job/id`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ id }),
     })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Request failed with status ${r.status}`);
+        return r.json();
+      })
       .then((data) => {
+        if (cancelled) return;
         const job = data?.data?.jobApplication;
         const { whatsapp_no, uae_no, botim, email } = job ?? {};
         if (whatsapp_no || uae_no || botim || email) {
-          setContacts({
-            phone: uae_no,
-            whatsapp: whatsapp_no,
-            botim: botim,
-            email,
+          dispatch({
+            type: "success",
+            contacts: { phone: uae_no, whatsapp: whatsapp_no, botim, email },
           });
         } else {
-          setLocked(true);
+          dispatch({ type: "locked" });
         }
       })
-      .catch(() => setLocked(true))
-      .finally(() => setLoading(false));
-  }, [id]);
+      .catch((err) => {
+        if (cancelled) return;
+        console.error("Failed to load maid contact details:", err);
+        dispatch({ type: "error" });
+      });
 
-  if (loading) return <ContactSkeleton />;
-  if (locked || !contacts)
+    dispatch({ type: "start" });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, retryCount]);
+
+  if (state.status === "loading") return <ContactSkeleton />;
+  if (state.status === "error")
+    return <ContactErrorCard onRetry={() => setRetryCount((c) => c + 1)} />;
+  if (state.status === "locked")
     return (
       <LockedContactCard maidRefNumber={maidRefNumber} maidName={maidName} />
     );
-  return <ContactInfoCard {...contacts} />;
+  return <ContactInfoCard {...state.contacts} />;
 }
