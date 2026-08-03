@@ -84,12 +84,18 @@ export function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<EmailForm>();
 
-  /* ── OAuth handlers ── */
+  /* ── OAuth handlers ──
+     The backend stores this in a session cookie and redirects the
+     browser straight to it after the provider callback, so it must be
+     an absolute URL — a relative path resolves against api.pickmymaid.com
+     instead of this site. */
   function handleGoogle() {
-    window.location.href = `${GOOGLE_URL}?redirect=${encodeURIComponent(returnTo)}`;
+    const redirect = `${window.location.origin}${returnTo}`;
+    window.location.href = `${GOOGLE_URL}?redirect=${encodeURIComponent(redirect)}`;
   }
   function handleApple() {
-    window.location.href = `${APPLE_URL}?redirect=${encodeURIComponent(returnTo)}`;
+    const redirect = `${window.location.origin}${returnTo}`;
+    window.location.href = `${APPLE_URL}?redirect=${encodeURIComponent(redirect)}`;
   }
 
   /* ── Email submit ── */
