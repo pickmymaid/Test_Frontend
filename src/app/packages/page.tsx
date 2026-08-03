@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PackagesPage } from "@/components/packages/PackagesPage";
 
@@ -21,5 +22,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PackagesPage />;
+  return (
+    <Suspense>
+      <PackagesPage />
+    </Suspense>
+  );
 }
