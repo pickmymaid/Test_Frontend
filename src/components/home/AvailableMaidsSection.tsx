@@ -116,7 +116,7 @@ return (
       {/* Header */}
       <div className="mb-12 lg:mb-16">
 
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 
           {/* Left */}
           <div>
@@ -136,14 +136,18 @@ return (
               Available Maids & Nannies in UAE
             </h2>
 
-            <p className="mt-4 text-lg text-[#6B6B6B]">
+            <p className="mt-4 text-lg text-[#6B6B6B] hidden lg:block">
               Updated on {todayLabel}
             </p>
 
           </div>
 
           {/* Right */}
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-col items-end gap-3 lg:flex-row lg:flex-wrap lg:items-center lg:justify-normal lg:gap-4">
+
+            <p className="text-sm text-[#6B6B6B] lg:hidden">
+              Updated on {todayLabel}
+            </p>
 
             <Link
               href="/search"
