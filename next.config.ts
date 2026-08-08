@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         destination: "/maid/:id/:slug",
         permanent: true,
       },
+      {
+        // /packages was renamed to /pricing.
+        source: "/packages",
+        destination: "/pricing",
+        permanent: true,
+      },
     ];
   },
   experimental: {

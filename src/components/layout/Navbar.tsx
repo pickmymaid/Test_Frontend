@@ -31,7 +31,7 @@ const ASSET_BASE = "https://assets.pickmymaid.com";
 const navLinks = [
   { label: "Home", href: "/", icon: Home },
   { label: "Search Maid/Nanny", href: "/search", icon: Search },
-  { label: "Packages", href: "/packages", icon: PackageCardIcon },
+  { label: "Packages", href: "/pricing", icon: PackageCardIcon },
   { label: "How It Works", href: "/how-it-works", icon: Compass },
   { label: "About Us", href: "/about-us", icon: Info },
   { label: "Favorites", href: "/favorites", icon: Heart },

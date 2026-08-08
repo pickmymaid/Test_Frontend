@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Hire a Nanny or Maid in UAE-With Flexible Pricing Options",
   description:
     "Choose the right access plan to find and hire verified maids and nannies in the UAE. One-time payment, no hidden charges, no automatic renewals.",
-  alternates: { canonical: "/packages" },
+  alternates: { canonical: "/pricing" },
   openGraph: {
     title: "Hire a Nanny or Maid in UAE-With Flexible Pricing Options",
     description:
       "Choose the right access plan to find and hire verified maids and nannies in the UAE. One-time payment, no hidden charges, no automatic renewals.",
-    url: "/packages",
+    url: "/pricing",
   },
   twitter: {
     card: "summary_large_image",

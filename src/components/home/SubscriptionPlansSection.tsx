@@ -82,7 +82,7 @@ export function SubscriptionPlansSection() {
 
         <div className="flex justify-center mt-10 lg:mt-12">
           <Link
-            href="/packages"
+            href="/pricing"
             className="text-sm font-semibold text-primary hover:underline"
           >
             View full package details &amp; FAQs

@@ -73,7 +73,7 @@ export function LoginPage() {
 
   const rawReturn = searchParams.get("returnTo") ?? "";
   // Sanitise: only allow relative paths to prevent open redirect
-  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/packages#plans";
+  const returnTo = rawReturn.startsWith("/") && !rawReturn.startsWith("//") ? rawReturn : "/pricing#plans";
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);

@@ -22,7 +22,6 @@ const PILLS: ExplorePill[] = [
   { label: "Newborn Nanny Dubai", variant: "solid", params: { service: "Nanny", q: "Newborn", location: "Dubai" } },
   { label: "Cooking Maid Dubai", variant: "solid", params: { service: "Cook", location: "Dubai" } },
   { label: "Maid Agency Dubai", variant: "solid", params: { q: "Maid agency", location: "Dubai" } },
-  { label: "Maid Abu Dhabi", variant: "solid", params: { service: "Maid", location: "Abu Dhabi" } },
   { label: "Maids in Abu Dhabi", variant: "solid", params: { service: "Maid", location: "Abu Dhabi" } },
   { label: "Filipino Maids Dubai", variant: "outline", params: { nationality: "Philippines", service: "Maid", location: "Dubai" } },
   { label: "Indian Maids Dubai", variant: "outline", params: { nationality: "India", service: "Maid", location: "Dubai" } },
@@ -40,30 +39,59 @@ function buildHref(params: Record<string, string>): string {
   return `/search?${new URLSearchParams(params).toString()}`;
 }
 
+const POPULAR = PILLS.filter((p) => p.variant === "solid");
+const REFINE = PILLS.filter((p) => p.variant === "outline");
+
 export function ExploreMaidsSection() {
   return (
     <section
       className="bg-white py-12 lg:py-20"
       aria-label="Explore Maids in Dubai & UAE"
     >
-      <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
-        <h2 className="text-2xl lg:text-4xl font-semibold text-dark text-center mb-8 lg:mb-10">
-          Explore Maids in Dubai & UAE
-        </h2>
-        <div className="flex flex-wrap justify-center gap-3 lg:gap-4">
-          {PILLS.map((pill) => (
-            <Link
-              key={pill.label}
-              href={buildHref(pill.params)}
-              className={
-                pill.variant === "solid"
-                  ? "rounded-full bg-primary px-5 py-3 text-sm lg:text-base font-semibold text-white whitespace-nowrap transition hover:bg-primary-600"
-                  : "rounded-full border border-primary bg-white px-5 py-3 text-sm lg:text-base font-medium text-primary whitespace-nowrap transition hover:bg-primary-50"
-              }
-            >
-              {pill.label}
-            </Link>
-          ))}
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-20">
+        <div className="text-center mb-8 lg:mb-10">
+          <h2 className="text-2xl lg:text-4xl font-semibold text-dark">
+            Explore Maids in Dubai & UAE
+          </h2>
+          <p className="mt-2 text-sm lg:text-base text-muted">
+            Jump straight to the search that matches what you need.
+          </p>
+        </div>
+
+        <div className="bg-[#F5F5F5] rounded-2xl lg:rounded-3xl p-4 lg:p-10 flex flex-col gap-6 lg:gap-10">
+          <div className="min-w-0">
+            <p className="text-xs font-medium tracking-[0.5px] text-muted uppercase mb-3 lg:mb-4">
+              Popular Searches
+            </p>
+            <div className="flex flex-wrap gap-2 lg:gap-3">
+              {POPULAR.map((pill) => (
+                <Link
+                  key={pill.label}
+                  href={buildHref(pill.params)}
+                  className="rounded-full bg-white border border-gray-200 shadow-[0px_2px_6px_0px_rgba(0,0,0,0.04)] px-4 py-2.5 text-[13px] lg:text-sm font-semibold text-dark whitespace-nowrap transition-colors hover:bg-primary hover:border-primary hover:text-white"
+                >
+                  {pill.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="min-w-0 border-t border-gray-200 pt-6 lg:pt-10">
+            <p className="text-xs font-medium tracking-[0.5px] text-muted uppercase mb-3 lg:mb-4">
+              Filter by Nationality & Visa
+            </p>
+            <div className="flex flex-wrap gap-2 lg:gap-3">
+              {REFINE.map((pill) => (
+                <Link
+                  key={pill.label}
+                  href={buildHref(pill.params)}
+                  className="rounded-full bg-primary px-4 py-2.5 text-[13px] lg:text-sm font-semibold text-white whitespace-nowrap transition-colors hover:bg-primary-600"
+                >
+                  {pill.label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -43,7 +43,7 @@ export function PaymentFailedPage() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <SplitButton label="Try Again" href="/packages" className="w-full" />
+            <SplitButton label="Try Again" href="/pricing" className="w-full" />
             <Link
               href="/contact"
               className="text-center text-sm font-medium text-muted hover:text-dark transition-colors py-2"

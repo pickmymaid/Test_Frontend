@@ -194,7 +194,7 @@ export function HeroSection() {
           />
           <HeroCtaButton
             label="Select a Package"
-            href="/packages"
+            href="/pricing"
             variant="filled"
             icon={<PackageCardIcon className="w-5 h-5" strokeWidth={1.8} />}
           />
@@ -235,7 +235,7 @@ export function HeroSection() {
               />
               <HeroCtaButton
                 label="Select a Package"
-                href="/packages"
+                href="/pricing"
                 variant="filled"
                 icon={<PackageCardIcon className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={1.8} />}
               />

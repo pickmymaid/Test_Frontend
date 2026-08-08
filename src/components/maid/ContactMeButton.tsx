@@ -28,7 +28,7 @@ export function ContactMeButton({
         "pmm-pending-hire",
         JSON.stringify({ id: maidRefNumber, name: maidName })
       );
-      router.push("/register?returnTo=/packages");
+      router.push("/register?returnTo=/pricing");
       return;
     }
     if (!isSubscribed) {
@@ -36,7 +36,7 @@ export function ContactMeButton({
         "pmm-pending-hire",
         JSON.stringify({ id: maidRefNumber, name: maidName })
       );
-      router.push("/packages");
+      router.push("/pricing");
       return;
     }
     document.getElementById("contact-section")?.scrollIntoView({ behavior: "instant" });

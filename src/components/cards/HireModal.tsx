@@ -26,13 +26,13 @@ export function HireModal({ profile, state, onClose }: HireModalProps) {
   function goToRegister() {
     savePendingHire(profile.id, profile.name);
     onClose();
-    router.push("/register?returnTo=/packages");
+    router.push("/register?returnTo=/pricing");
   }
 
   function goToPackages() {
     savePendingHire(profile.id, profile.name);
     onClose();
-    router.push("/packages");
+    router.push("/pricing");
   }
 
   return createPortal(
