@@ -13,7 +13,6 @@ import VisaSection from "./VisaSection";
 import PersonalInformation from "./PersonalInformation";
 import CalenderDots from "../icons/CalenderDots";
 import MapPin from "../icons/MapPin";
-import GlobeSimple from "../icons/GlobeSimple";
 import Heart from "../icons/Heart";
 import HandsPraying from "../icons/HandsPraying";
 import Student from "../icons/Student";
@@ -184,7 +183,15 @@ export function MaidProfilePage({
       value: maid.location as string,
     },
     {
-      icon: <GlobeSimple />,
+      icon: (
+        <Image
+          src={flagPath(maid.nationality)}
+          width={24}
+          height={24}
+          alt={maid.nationality === "Srilanka" ? "Sri Lanka" : maid.nationality}
+          className="rounded-full object-cover w-6 h-6"
+        />
+      ),
       label: "Nationality",
       value: maid.nationality,
     },

@@ -22,7 +22,7 @@ export default function VisaSection({ status, expiryDate }: { status: string; ex
         </div>
         {formattedExpiry && (
           <div className="flex items-center justify-between gap-2 bg-[#f5f5f5] px-3 py-2 rounded-lg">
-            <span className="text-xs font-medium text-dark tracking-[0.5px]">Expiry Date</span>
+            <span className="text-xs font-medium text-dark tracking-[0.5px]">Date of Visa Expiry</span>
             <span className="text-xs font-medium text-dark/60 text-right tracking-[0.5px]">{formattedExpiry}</span>
           </div>
         )}
