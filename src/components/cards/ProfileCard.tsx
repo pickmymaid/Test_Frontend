@@ -47,6 +47,12 @@ export interface Profile {
   postedOn?: string;
 }
 
+interface ProfileCardProps {
+  profile: Profile;
+  /** Set for above-the-fold cards (e.g. first grid row) to speed up LCP */
+  priority?: boolean;
+}
+
 /* ─── Helpers ────────────────────────────────────────────────────────────── */
 
 const nationalityMap = (nationality: string) =>
@@ -123,7 +129,7 @@ function InfoRow({
 
 /* ─── ProfileCard ────────────────────────────────────────────────────────── */
 
-export function ProfileCard({ profile }: { profile: Profile }) {
+export function ProfileCard({ profile, priority = false }: ProfileCardProps) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -215,6 +221,8 @@ export function ProfileCard({ profile }: { profile: Profile }) {
               fill
               sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1280px) 50vw, 25vw"
               className="object-cover object-top"
+              priority={priority}
+              fetchPriority={priority ? "high" : undefined}
             />
           ) : (
             <div

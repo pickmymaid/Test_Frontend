@@ -510,6 +510,7 @@ export function SearchResultsSection({
   const shouldScrollRef = useRef(false);
   const pendingScrollY = useRef<number | null>(null);
   const sortRef = useRef<HTMLDivElement>(null);
+  const skipNextFetch = useRef(!!initialData);
 
   /* Derive everything from URL — single source of truth */
   const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10) || 1);
@@ -634,7 +635,13 @@ export function SearchResultsSection({
 
   /* Data fetching */
   useEffect(() => {
+    if (skipNextFetch.current) {
+      skipNextFetch.current = false;
+      return;
+    }
+
     let cancelled = false;
+    dispatch({ type: "start" });
 
     findMaids(buildFindMaidsParams(searchParams, page))
       .then((res) => {
@@ -653,8 +660,6 @@ export function SearchResultsSection({
       .catch(() => {
         if (!cancelled) dispatch({ type: "error" });
       });
-
-    dispatch({ type: "start" });
 
     return () => {
       cancelled = true;
@@ -918,8 +923,12 @@ export function SearchResultsSection({
               ) : (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {profiles.map((profile: Profile) => (
-                      <ProfileCard key={profile.id} profile={profile} />
+                    {profiles.map((profile: Profile, i) => (
+                      <ProfileCard
+                        key={profile.id}
+                        profile={profile}
+                        priority={page === 1 && i < 3}
+                      />
                     ))}
                   </div>
 

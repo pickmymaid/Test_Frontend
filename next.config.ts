@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "assets.pickmymaid.com", pathname: "/**" },
     ],
     qualities: [75, 90],
+    formats: ["image/webp"],
   },
 };
 
