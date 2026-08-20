@@ -11,13 +11,39 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
+// Thrown when the request never reached the server — timeout, dropped
+// connection, DNS failure, etc. Common on flaky mobile data networks.
+export class NetworkError extends Error {
+  constructor(message = 'Network error. Please check your connection and try again.') {
+    super(message)
+    this.name = 'NetworkError'
+  }
+}
+
+const REQUEST_TIMEOUT_MS = 20000
+
+async function fetchOnce<T>(path: string, options?: RequestInit): Promise<T> {
   const { headers: extra, ...rest } = options ?? {}
-  const res = await fetch(`${BASE_URL}${path}`, {
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json', ...(extra as Record<string, string>) },
-    ...rest,
-  })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  let res: Response
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...(extra as Record<string, string>) },
+      signal: controller.signal,
+      ...rest,
+    })
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      throw new NetworkError('Request timed out. Please check your connection and try again.')
+    }
+    throw new NetworkError()
+  } finally {
+    clearTimeout(timeout)
+  }
+
   if (!res.ok) {
     let message = `API error: ${res.status}`
     try {
@@ -27,6 +53,21 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     throw new ApiError(message, res.status)
   }
   return res.json()
+}
+
+// Mobile data networks in the UAE frequently drop or stall individual
+// requests. A network-level failure (not an HTTP error response) is
+// retried once after a short delay before giving up.
+async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  try {
+    return await fetchOnce<T>(path, options)
+  } catch (err) {
+    if (err instanceof NetworkError) {
+      await new Promise((r) => setTimeout(r, 1200))
+      return await fetchOnce<T>(path, options)
+    }
+    throw err
+  }
 }
 
 export const api = {
@@ -278,5 +319,7 @@ export async function findMaids(params: FindMaidsParams = {}): Promise<FindMaids
     if (val !== undefined && val !== '') query.set(key, String(val))
   }
   const qs = query.toString()
-  return api.get<FindMaidsResponse>(`/v2/maids/find/${page}${qs ? `?${qs}` : ''}`, { next: { revalidate: 900 } } as RequestInit)
+  // Every distinct filter combo is its own cache entry, so a short TTL here
+  // multiplies writes across the whole combinatorial space of query params.
+  return api.get<FindMaidsResponse>(`/v2/maids/find/${page}${qs ? `?${qs}` : ''}`, { next: { revalidate: 3600 } } as RequestInit)
 }

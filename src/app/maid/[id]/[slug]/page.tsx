@@ -5,7 +5,10 @@ import type { ApiMaid } from "@/types";
 import { MaidProfilePage } from "@/components/maid/MaidProfilePage";
 import { seoConfig } from "@/config/seo.config";
 
-export const revalidate = 1800; // 30 minutes
+// On-demand revalidation (see /api/revalidate) already refreshes a page
+// the moment its data changes. This is just a safety-net TTL in case that
+// webhook is ever missed — it doesn't need to be short.
+export const revalidate = 21600; // 6 hours
 export const dynamicParams = true;
 
 const ASSET_BASE = "https://assets.pickmymaid.com";

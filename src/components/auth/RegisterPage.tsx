@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth";
-import { registerCustomer } from "@/lib/api";
+import { registerCustomer, NetworkError } from "@/lib/api";
 import { SplitButton } from "@/components/ui/SplitButton";
 
 /* ─── Constants ─────────────────────────────────────────────── */
@@ -297,6 +297,12 @@ export function RegisterPage() {
       const separator = returnTo.includes("?") ? "&" : "?";
       router.push(`${returnTo}${separator}registered=1#plans`);
     } catch (err) {
+      if (err instanceof NetworkError) {
+        setServerError(
+          "We couldn't reach our servers — this can happen on mobile data. Please check your signal or switch to Wi-Fi, then try again."
+        );
+        return;
+      }
       const msg = err instanceof Error ? err.message : "";
       if (/exist|already|duplicate|registered/i.test(msg)) {
         setServerError("An account with this email already exists. Please log in instead.");
