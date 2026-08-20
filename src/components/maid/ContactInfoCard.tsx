@@ -19,11 +19,12 @@ interface ContactRowProps {
   icon: React.ReactNode;
   label: string;
   value: string;
+  href?: string;
 }
 
-function ContactRow({ icon, label, value }: ContactRowProps) {
-  return (
-    <div className="flex items-center gap-3">
+function ContactRow({ icon, label, value, href }: ContactRowProps) {
+  const content = (
+    <>
       <div className="w-11 h-11 shrink-0 rounded-full bg-white/40 backdrop-blur-sm flex items-center justify-center text-white">
         {icon}
       </div>
@@ -33,8 +34,28 @@ function ContactRow({ icon, label, value }: ContactRowProps) {
           {value}
         </p>
       </div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+        className="flex items-center gap-3 -m-1 p-1 rounded-xl transition-colors hover:bg-white/10 active:bg-white/15"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return <div className="flex items-center gap-3">{content}</div>;
+}
+
+// wa.me needs digits only (no +, spaces, or dashes)
+function toWhatsAppDigits(value: string): string {
+  return value.replace(/[^\d]/g, "");
 }
 
 export function ContactInfoCard({
@@ -44,11 +65,26 @@ export function ContactInfoCard({
   email,
 }: ContactInfoCardProps) {
   const rows = [
-    phone && { icon: <Phone className="w-5 h-5" />, label: "UAE calling number", value: phone },
-    whatsapp && { icon: <WhatsAppIcon />, label: "WhatsApp number", value: whatsapp },
+    phone && {
+      icon: <Phone className="w-5 h-5" />,
+      label: "UAE calling number",
+      value: phone,
+      href: `tel:${phone.replace(/[^\d+]/g, "")}`,
+    },
+    whatsapp && {
+      icon: <WhatsAppIcon />,
+      label: "WhatsApp number",
+      value: whatsapp,
+      href: `https://wa.me/${toWhatsAppDigits(whatsapp)}`,
+    },
     botim && { icon: <Video className="w-5 h-5" />, label: "Botim number", value: botim },
-    email && { icon: <Mail className="w-5 h-5" />, label: "Email", value: email },
-  ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string }[];
+    email && {
+      icon: <Mail className="w-5 h-5" />,
+      label: "Email",
+      value: email,
+      href: `mailto:${email}`,
+    },
+  ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string; href?: string }[];
 
   if (rows.length === 0) return null;
 
