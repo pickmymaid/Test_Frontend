@@ -182,7 +182,7 @@ const trustPoints: { icon: LucideIcon; title: string; description: string }[] =
     },
   ];
 
-// ─── AboutPage ────────────────────────────────────────────────
+
 
 export function AboutPage() {
   return (
