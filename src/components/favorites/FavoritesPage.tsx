@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { ProfileCard, type Profile } from "@/components/cards/ProfileCard";
 import { SplitButton } from "@/components/ui/SplitButton";
 import { useAuthStore } from "@/store/auth";
-import { getWishlist } from "@/lib/api";
+import { getWishlist, ApiError } from "@/lib/api";
 import type { ApiMaid } from "@/types";
 
 /* ─── Constants ───────────────────────────────────────────── */
@@ -158,7 +158,7 @@ export function FavoritesPage() {
       })
       .catch((err) => {
         if (cancelled) return;
-        const is401 = err instanceof Error && err.message.includes("401");
+        const is401 = err instanceof ApiError && err.status === 401;
         if (is401) {
           logout();
           toast("Your session has expired. Please log in again.");

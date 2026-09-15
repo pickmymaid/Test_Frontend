@@ -5,9 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
-
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://api.pickmymaid.com/api";
+import { resetPassword, ApiError } from "@/lib/api";
 
 interface FormData {
   password: string;
@@ -37,28 +35,19 @@ export function ResetPasswordPage({ token }: { token: string }) {
   async function onSubmit(data: FormData) {
     setServerError(null);
     try {
-      const res = await fetch(`${API_BASE}/v1/auth/customer/reset-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          password: data.password,
-          confirm_password: data.confirm_password,
-        }),
+      await resetPassword(token, {
+        password: data.password,
+        confirm_password: data.confirm_password,
       });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.message ?? String(res.status));
-      }
       setDone(true);
     } catch (err) {
       const msg = (err instanceof Error ? err.message : "").toLowerCase();
-      setServerError(
+      const isTokenIssue =
         msg.includes("expired") ||
-          msg.includes("invalid") ||
-          msg.includes("401")
+        msg.includes("invalid") ||
+        (err instanceof ApiError && err.status === 401);
+      setServerError(
+        isTokenIssue
           ? "This reset link has expired or is invalid. Please request a new one."
           : "Something went wrong. Please try again.",
       );

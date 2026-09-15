@@ -1,21 +1,11 @@
 "use client";
 
-import { useState, useEffect, useReducer } from "react";
 import { Lock, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ContactInfoCard } from "./ContactInfoCard";
 import { SplitButton } from "@/components/ui/SplitButton";
 import { useAuthStore } from "@/store/auth";
-
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://api.pickmymaid.com/api";
-
-interface ContactData {
-  phone?: string;
-  whatsapp?: string;
-  botim?: string;
-  email?: string;
-}
+import { useMaidSession } from "./MaidSessionContext";
 
 /* Blurred placeholder shown behind the lock overlay */
 function BlurredPlaceholder() {
@@ -110,88 +100,26 @@ function ContactErrorCard({ onRetry }: { onRetry: () => void }) {
   );
 }
 
-type ContactState =
-  | { status: "loading" }
-  | { status: "error" }
-  | { status: "locked" }
-  | { status: "success"; contacts: ContactData };
-
-type ContactAction =
-  | { type: "start" }
-  | { type: "error" }
-  | { type: "locked" }
-  | { type: "success"; contacts: ContactData };
-
-function contactReducer(_state: ContactState, action: ContactAction): ContactState {
-  switch (action.type) {
-    case "start":
-      return { status: "loading" };
-    case "error":
-      return { status: "error" };
-    case "locked":
-      return { status: "locked" };
-    case "success":
-      return { status: "success", contacts: action.contacts };
-  }
-}
-
 export function ContactSection({
-  id,
   maidRefNumber,
   maidName,
 }: {
-  id: string;
   maidRefNumber: string;
   maidName: string;
 }) {
-  const [state, dispatch] = useReducer(contactReducer, { status: "loading" });
-  const [retryCount, setRetryCount] = useState(0);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch(`${API_BASE}/v1/job/id`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ id }),
-    })
-      .then((r) => {
-        if (!r.ok) throw new Error(`Request failed with status ${r.status}`);
-        return r.json();
-      })
-      .then((data) => {
-        if (cancelled) return;
-        const job = data?.data?.jobApplication;
-        const { whatsapp_no, uae_no, botim, email } = job ?? {};
-        if (whatsapp_no || uae_no || botim || email) {
-          dispatch({
-            type: "success",
-            contacts: { phone: uae_no, whatsapp: whatsapp_no, botim, email },
-          });
-        } else {
-          dispatch({ type: "locked" });
-        }
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        console.error("Failed to load maid contact details:", err);
-        dispatch({ type: "error" });
-      });
-
-    dispatch({ type: "start" });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [id, retryCount]);
+  const { state, retry } = useMaidSession();
 
   if (state.status === "loading") return <ContactSkeleton />;
-  if (state.status === "error")
-    return <ContactErrorCard onRetry={() => setRetryCount((c) => c + 1)} />;
-  if (state.status === "locked")
+  if (state.status === "error") return <ContactErrorCard onRetry={retry} />;
+
+  const { phone, whatsapp, botim, email } = state.data;
+  if (!phone && !whatsapp && !botim && !email) {
     return (
       <LockedContactCard maidRefNumber={maidRefNumber} maidName={maidName} />
     );
-  return <ContactInfoCard {...state.contacts} />;
+  }
+
+  return (
+    <ContactInfoCard phone={phone} whatsapp={whatsapp} botim={botim} email={email} />
+  );
 }

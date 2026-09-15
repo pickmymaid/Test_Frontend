@@ -1,6 +1,6 @@
 import type { FeaturedJob, ApiMaid, ApiBlog, ApiBlogDetail } from '@/types'
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.pickmymaid.com/api'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.backendpickmymaid.site/api'
 
 export class ApiError extends Error {
   status: number
@@ -205,6 +205,27 @@ export async function loginCustomer(body: LoginBody): Promise<LoginResponse> {
 
 export async function verifyAuth(): Promise<VerifyAuthResponse> {
   return request<VerifyAuthResponse>('/v2/auth/login/success')
+}
+
+export interface ForgotPasswordBody {
+  email: string
+}
+
+export async function forgotPassword(body: ForgotPasswordBody): Promise<void> {
+  await api.post<unknown>('/v1/auth/customer/forget-password', body)
+}
+
+export interface ResetPasswordBody {
+  password: string
+  confirm_password: string
+}
+
+export async function resetPassword(token: string, body: ResetPasswordBody): Promise<void> {
+  await request<unknown>('/v1/auth/customer/reset-password', {
+    method: 'POST',
+    headers: { Authorization: token },
+    body: JSON.stringify(body),
+  })
 }
 
 export async function logoutUser(): Promise<void> {

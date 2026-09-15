@@ -4,6 +4,8 @@ import { Wallet, GraduationCap, Timer, Check } from "lucide-react";
 import { CheckCircleIcon } from "@/components/icons/CheckCircleIcon";
 import { WishlistButton } from "./WishlistButton";
 import { ContactSection } from "./ContactSection";
+import { MaidSessionProvider } from "./MaidSessionContext";
+import { sanitizeBasicHtml } from "@/lib/sanitizeHtml";
 import { EmploymentHistory } from "./EmploymentHistory";
 import { LanguagesSection } from "./LanguagesSection";
 import { ProfileCard, type Profile } from "@/components/cards/ProfileCard";
@@ -223,6 +225,7 @@ export function MaidProfilePage({
   ];
 
   return (
+    <MaidSessionProvider maidId={maid._id}>
     <div className="bg-[#F5F5F5] min-h-screen py-26 lg:py-25">
       <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-16">
         {/* Back button */}
@@ -379,7 +382,7 @@ export function MaidProfilePage({
                 </h2>
                 <div
                   className="text-sm max-w-none text-dark/70  prose-strong:text-dark"
-                  dangerouslySetInnerHTML={{ __html: maid.notes }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeBasicHtml(maid.notes) }}
                 />
               </div>
             )}
@@ -398,7 +401,6 @@ export function MaidProfilePage({
             <div className="flex flex-col-reverse lg:flex-row gap-4 items-stretch">
               <div id="contact-section" className="flex-2">
                 <ContactSection
-                  id={maid._id}
                   maidRefNumber={String(maid.ref_number)}
                   maidName={maid.name}
                 />
@@ -430,7 +432,7 @@ export function MaidProfilePage({
                 </h2>
                 <div
                   className="prose prose-sm max-w-none text-dark/70 prose-p:leading-relaxed prose-ul:leading-relaxed prose-strong:text-dark"
-                  dangerouslySetInnerHTML={{ __html: maid.notes }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeBasicHtml(maid.notes) }}
                 />
               </div>
             )}
@@ -450,5 +452,6 @@ export function MaidProfilePage({
         </div>
       </div>
     </div>
+    </MaidSessionProvider>
   );
 }

@@ -6,14 +6,23 @@ import { toast } from "sonner";
 import { HeartStraight } from "@/components/icons/HeartStraight";
 import { useAuthStore } from "@/store/auth";
 import { toggleWishlist } from "@/lib/api";
+import { useMaidSession } from "./MaidSessionContext";
 
 export function WishlistButton({ maidId }: { maidId: string }) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { state } = useMaidSession();
 
-  const [saved, setSaved] = useState(false);
+  // `override` holds the user's own toggle once they click — until then the
+  // button reflects the authenticated wishlist status from MaidSessionContext.
+  // The server-rendered `maid` prop is always fetched without the visitor's
+  // session, so it can never carry this on its own.
+  const [override, setOverride] = useState<boolean | null>(null);
   const [isPending, setIsPending] = useState(false);
+
+  const remoteSaved = state.status === "ready" && state.data.isInWishlist;
+  const saved = override ?? remoteSaved;
 
   async function handleFavorite() {
     if (!isAuthenticated || !user?.id) {
@@ -24,13 +33,13 @@ export function WishlistButton({ maidId }: { maidId: string }) {
     if (isPending) return;
 
     const nextSaved = !saved;
-    setSaved(nextSaved);
+    setOverride(nextSaved);
     setIsPending(true);
     try {
       await toggleWishlist({ maidId, user_id: user.id });
       toast(nextSaved ? "Saved to favourites." : "Removed from favourites.");
     } catch {
-      setSaved(!nextSaved);
+      setOverride(!nextSaved);
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsPending(false);

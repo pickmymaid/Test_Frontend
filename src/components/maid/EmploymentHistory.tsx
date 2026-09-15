@@ -1,5 +1,6 @@
 import { Clock } from "lucide-react";
 import type { ApiMaidEmploymentHistory } from "@/types";
+import { sanitizeBasicHtml } from "@/lib/sanitizeHtml";
 
 function formatDuration(years: number): string {
   return years === 1 ? "1 Year" : `${years} Years`;
@@ -61,7 +62,7 @@ export function EmploymentHistory({
                     <div
                       className="text-sm lg:text-md text-[#212121] tracking-[0.5px] lg:tracking-[0.25px] leading-5 lg:leading-6 prose prose-sm max-w-none prose-p:my-0"
                       dangerouslySetInnerHTML={{
-                        __html: entry.job_description,
+                        __html: sanitizeBasicHtml(entry.job_description),
                       }}
                     />
                   )}

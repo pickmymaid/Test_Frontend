@@ -8,11 +8,11 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth";
-import { loginCustomer, verifyAuth, getPaymentDetails } from "@/lib/api";
+import { loginCustomer, verifyAuth, getPaymentDetails, ApiError } from "@/lib/api";
 
 /* ─── OAuth endpoints ────────────────────────────────────────
    TODO: confirm exact paths with backend team                */
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://api.pickmymaid.com/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://api.backendpickmymaid.site/api";
 const GOOGLE_URL = `${API_BASE}/v2/auth/google`;
 const APPLE_URL  = `${API_BASE}/v2/auth/apple`;
 
@@ -87,7 +87,7 @@ export function LoginPage() {
   /* ── OAuth handlers ──
      The backend stores this in a session cookie and redirects the
      browser straight to it after the provider callback, so it must be
-     an absolute URL — a relative path resolves against api.pickmymaid.com
+     an absolute URL — a relative path resolves against api.backendpickmymaid.site
      instead of this site. */
   function handleGoogle() {
     const redirect = `${window.location.origin}${returnTo}`;
@@ -138,9 +138,10 @@ export function LoginPage() {
         router.push(returnTo);
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "";
+      const isBadCredentials =
+        err instanceof ApiError && (err.status === 401 || err.status === 400);
       setServerError(
-        msg.includes("401") || msg.includes("400")
+        isBadCredentials
           ? "Incorrect email or password."
           : "Something went wrong. Please try again."
       );

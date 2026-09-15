@@ -57,11 +57,10 @@ export default function RootLayout({
     <html lang="en" className={`h-full antialiased ${manrope.variable}`}>
       <head>
         <link rel="preconnect" href="https://assets.pickmymaid.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://api.pickmymaid.com" />
-        <link rel="dns-prefetch" href="https://api.pickmymaid.com" />
+        <link rel="preconnect" href="https://api.backendpickmymaid.site" />
+        <link rel="dns-prefetch" href="https://api.backendpickmymaid.site" />
       </head>
       <body className="min-h-full flex flex-col">
-        {/* <NoRightClick /> */}
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

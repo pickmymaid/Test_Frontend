@@ -5,8 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://api.pickmymaid.com/api";
+import { forgotPassword, ApiError } from "@/lib/api";
 
 interface FormData {
   email: string;
@@ -33,22 +32,21 @@ export function ForgotPasswordPage() {
   async function onSubmit(data: FormData) {
     setServerError(null);
     try {
-      const res = await fetch(`${API_BASE}/v1/auth/customer/forget-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email }),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.message ?? String(res.status));
-      }
+      await forgotPassword({ email: data.email });
       setSent(true);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "";
+      const msg = (err instanceof Error ? err.message : "").toLowerCase();
+      // Backend returns this as a 500 with message "User does not exist"
+      // (not a 404), so the status check alone can't be trusted here.
+      const isNoAccount =
+        (err instanceof ApiError && err.status === 404) ||
+        msg.includes("not found") ||
+        msg.includes("no account") ||
+        msg.includes("does not exist");
       setServerError(
-        msg.includes("404") || msg.includes("not found")
+        isNoAccount
           ? "No account found with that email address."
-          : "Something went wrong. Please try again."
+          : "Something went wrong. We couldn't send the reset email — please try again."
       );
     }
   }

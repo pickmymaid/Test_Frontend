@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import sanitizeHtml from 'sanitize-html'
+import { sanitizeRichHtml } from '@/lib/sanitizeHtml'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -172,22 +172,7 @@ export default async function BlogDetailPage({ params }: Props) {
                 <div
                   className="blog-content"
                   dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(blog.content ?? '', {
-                      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'figure', 'figcaption', 'iframe']),
-                      allowedAttributes: {
-                        ...sanitizeHtml.defaults.allowedAttributes,
-                        '*': ['style', 'class'],
-                        a: ['href', 'name', 'target', 'rel'],
-                        img: ['src', 'srcset', 'alt', 'width', 'height', 'loading'],
-                        iframe: ['src', 'width', 'height', 'allowfullscreen', 'frameborder'],
-                        table: ['border', 'cellpadding', 'cellspacing', 'width'],
-                        td: ['colspan', 'rowspan', 'align', 'valign', 'width'],
-                        th: ['colspan', 'rowspan', 'align', 'valign', 'width', 'scope'],
-                        col: ['span', 'width'],
-                        colgroup: ['span'],
-                      },
-                      allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com'],
-                    }),
+                    __html: sanitizeRichHtml(blog.content),
                   }}
                 />
               </div>
