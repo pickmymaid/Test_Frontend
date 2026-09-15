@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { getMaid } from "@/lib/api";
@@ -42,6 +42,19 @@ export async function POST(req: NextRequest) {
     );
 
     revalidatePath(`/maid/${id}/${slug}`);
+
+    // The detail page above is its own cache entry, but the search/listing
+    // page and the homepage's featured section each cache their own
+    // findMaids/getFeaturedJobs fetch (tagged 'maids') independently — an
+    // edit needs to purge those too or they'd keep serving stale maid data
+    // until their own TTL (up to 1h) elapses.
+    // { expire: 0 } forces an immediate purge — a named profile (e.g. "max")
+    // would instead schedule a soft/background revalidation, which isn't
+    // what we want for an admin edit that needs to show up right away.
+    revalidateTag("maids", { expire: 0 });
+    revalidatePath("/search");
+    revalidatePath("/");
+
     return NextResponse.json({
       revalidated: true,
       path: `/maid/${id}/${slug}`,

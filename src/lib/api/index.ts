@@ -77,7 +77,7 @@ export const api = {
 }
 
 export async function getFeaturedJobs(): Promise<{ data: FeaturedJob[] }> {
-  return api.get<{ data: FeaturedJob[] }>('/v1/job/featured', { next: { revalidate: 1800 } } as RequestInit)
+  return api.get<{ data: FeaturedJob[] }>('/v1/job/featured', { next: { revalidate: 1800, tags: ['maids'] } } as RequestInit)
 }
 
 export interface SearchJobsParams {
@@ -342,5 +342,7 @@ export async function findMaids(params: FindMaidsParams = {}): Promise<FindMaids
   const qs = query.toString()
   // Every distinct filter combo is its own cache entry, so a short TTL here
   // multiplies writes across the whole combinatorial space of query params.
-  return api.get<FindMaidsResponse>(`/v2/maids/find/${page}${qs ? `?${qs}` : ''}`, { next: { revalidate: 3600 } } as RequestInit)
+  // The 'maids' tag lets an admin edit purge every combo on demand instead
+  // of waiting out the TTL (see /api/revalidate).
+  return api.get<FindMaidsResponse>(`/v2/maids/find/${page}${qs ? `?${qs}` : ''}`, { next: { revalidate: 3600, tags: ['maids'] } } as RequestInit)
 }

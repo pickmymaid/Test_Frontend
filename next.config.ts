@@ -3,8 +3,13 @@ import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 // Script/connect sources beyond 'self' are constrained to what this app
 // actually loads: GTM + Clarity analytics (lazily injected from
-// components/analytics), the backend API, and YouTube/Vimeo embeds (the
-// same hosts sanitizeHtml.ts allows for blog <iframe> tags). 'unsafe-inline'
+// components/analytics) plus the Google Ads/Analytics beacon and
+// conversion-tracking hosts those tags call out to (google.com,
+// analytics.google.com, googleads.g.doubleclick.net — note Google Ads'
+// click-id redirect can also land on other country TLDs like google.co.in
+// depending on visitor locale, which isn't fully enumerable here), the
+// backend API, and YouTube/Vimeo embeds (the same hosts sanitizeHtml.ts
+// allows for blog <iframe> tags). 'unsafe-inline'
 // stays on script-src/style-src because Next's hydration payload and GTM's
 // own tag-injection both rely on inline <script>, and this codebase uses
 // inline `style={{...}}` throughout — removing it would require a
@@ -19,11 +24,11 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ""}https://www.googletagmanager.com https://www.clarity.ms`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ""}https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms https://googleads.g.doubleclick.net`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://assets.pickmymaid.com https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://c.clarity.ms",
+  "img-src 'self' data: https://assets.pickmymaid.com https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://c.clarity.ms https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.backendpickmymaid.site https://www.google-analytics.com https://www.clarity.ms https://c.clarity.ms",
+  "connect-src 'self' https://api.backendpickmymaid.site https://www.google-analytics.com https://www.clarity.ms https://c.clarity.ms https://www.google.com https://analytics.google.com https://googleads.g.doubleclick.net",
   "frame-src https://www.youtube.com https://player.vimeo.com",
   "object-src 'none'",
   "base-uri 'self'",
