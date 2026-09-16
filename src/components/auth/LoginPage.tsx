@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth";
-import { loginCustomer, verifyAuth, getPaymentDetails, ApiError } from "@/lib/api";
+import { loginCustomer, verifyAuth, getPaymentDetails, ApiError, NetworkError } from "@/lib/api";
 
 /* ─── OAuth endpoints ────────────────────────────────────────
    TODO: confirm exact paths with backend team                */
@@ -138,13 +138,11 @@ export function LoginPage() {
         router.push(returnTo);
       }
     } catch (err) {
-      const isBadCredentials =
-        err instanceof ApiError && (err.status === 401 || err.status === 400);
-      setServerError(
-        isBadCredentials
-          ? "Incorrect email or password."
-          : "Something went wrong. Please try again."
-      );
+      if (err instanceof NetworkError || err instanceof ApiError) {
+        setServerError(err.message);
+      } else {
+        setServerError("Something went wrong. Please try again.");
+      }
     }
   }
 
@@ -240,7 +238,6 @@ export function LoginPage() {
                     autoComplete="current-password"
                     {...register("password", {
                       required: "Password is required",
-                      minLength: { value: 6, message: "Password must be at least 6 characters" },
                     })}
                     className={`${inputCls(!!errors.password)} pr-11`}
                   />

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
-import { forgotPassword, ApiError } from "@/lib/api";
+import { forgotPassword, ApiError, NetworkError } from "@/lib/api";
 
 interface FormData {
   email: string;
@@ -35,19 +35,11 @@ export function ForgotPasswordPage() {
       await forgotPassword({ email: data.email });
       setSent(true);
     } catch (err) {
-      const msg = (err instanceof Error ? err.message : "").toLowerCase();
-      // Backend returns this as a 500 with message "User does not exist"
-      // (not a 404), so the status check alone can't be trusted here.
-      const isNoAccount =
-        (err instanceof ApiError && err.status === 404) ||
-        msg.includes("not found") ||
-        msg.includes("no account") ||
-        msg.includes("does not exist");
-      setServerError(
-        isNoAccount
-          ? "No account found with that email address."
-          : "Something went wrong. We couldn't send the reset email — please try again."
-      );
+      if (err instanceof NetworkError || err instanceof ApiError) {
+        setServerError(err.message);
+      } else {
+        setServerError("Something went wrong. We couldn't send the reset email — please try again.");
+      }
     }
   }
 

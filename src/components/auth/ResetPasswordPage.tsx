@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
-import { resetPassword, ApiError } from "@/lib/api";
+import { resetPassword, ApiError, NetworkError } from "@/lib/api";
 
 interface FormData {
   password: string;
@@ -15,6 +15,7 @@ interface FormData {
 export function ResetPasswordPage({ token }: { token: string }) {
   const [done, setDone] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isTokenIssue, setIsTokenIssue] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -34,6 +35,7 @@ export function ResetPasswordPage({ token }: { token: string }) {
 
   async function onSubmit(data: FormData) {
     setServerError(null);
+    setIsTokenIssue(false);
     try {
       await resetPassword(token, {
         password: data.password,
@@ -41,16 +43,14 @@ export function ResetPasswordPage({ token }: { token: string }) {
       });
       setDone(true);
     } catch (err) {
-      const msg = (err instanceof Error ? err.message : "").toLowerCase();
-      const isTokenIssue =
-        msg.includes("expired") ||
-        msg.includes("invalid") ||
-        (err instanceof ApiError && err.status === 401);
-      setServerError(
-        isTokenIssue
-          ? "This reset link has expired or is invalid. Please request a new one."
-          : "Something went wrong. Please try again.",
-      );
+      // 401 = token expired/mismatched, 404 = the account behind the token
+      // no longer exists — both mean "get a fresh reset link".
+      setIsTokenIssue(err instanceof ApiError && (err.status === 401 || err.status === 404));
+      if (err instanceof NetworkError || err instanceof ApiError) {
+        setServerError(err.message);
+      } else {
+        setServerError("Something went wrong. Please try again.");
+      }
     }
   }
 
@@ -130,7 +130,7 @@ export function ResetPasswordPage({ token }: { token: string }) {
               {serverError && (
                 <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
                   {serverError}{" "}
-                  {serverError.includes("expired") && (
+                  {isTokenIssue && (
                     <Link
                       href="/forgot-password"
                       className="font-semibold underline"
